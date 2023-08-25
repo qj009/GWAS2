@@ -1,24 +1,32 @@
-#' A Cat Function
+#' Haplotype association detection function
+#' @description
+#' This function allows you to detect target phenotype associated haplotypes.
+#' @details
+#' Additional details...
 #'
-#' This function allows you to express your love of cats.
-#' @param love Do you love cats? Defaults to TRUE.
+#'
+#' @param MAP.S: SNP map matrix containing the genomic positions for SNPs the user wants to scan. It should contain 2 columns: chromosome and base pair positions respectively. It can be NULL.
+#' @param POS.S: SNP map index (relevant to the full SNP map file) referring the genomic position information for SNPs which the user want to scan, It should be a vector of numbers. It can be NULL.
+#' @param GEN: Letter code genotype matrix with SNP genomic position information. The rows represent SNPs. The columns represent samples and each sample has two columns. The first two columns are chromosome and base pair positions.
+#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
+#' @param nHap: Initial haplotype length user want to start with. The default value is 2.
+#' @param method: Association model user want to use. It could be FIXED or RANDOM.
+#' @param p.threshold: The p value threshold for initial significant haplotype selection. It should be a loose threshold to keep more seed haplotype for extension step.
+#' @param RR0: Initial significant haplotype selection result. It can be NULL.
+#' @param TEST: The statistical test user want to use for significance test. 1: wald test; 2: lrt test, c(1,2) for both.
+#' @param PAR: Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
+
+#' @returns
+#' SEL.HAP function output a list containing two element. The first element is FINAL haplotype scanning and test results
+
 #' @keywords cats
 #' @export
 #' @examples
 #' cat_function()
 
-# KK: directly use KIN
-# GK: genotype matrix (numerical, row is sample, col is snps), no need
-# nHap: initial haplotype length
-# RR0: initial selection result
-# TEST: 1: wald test; 2: lrt test
-# GEN: letter code genotype matrix with chr/pos info
-#   row: snps,
-#   col: samples,each sample has two rows,
-# test.HAP need letter code genotype
-# MAP.S: map file with chromosome and postion that the user wants to scan, can be NULL
-# POS.S: positions which the user want to scan (full MAP file index), can be NULL
-SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap, method, p.threshold, RR0=NULL, TEST, PAR=NULL){
+#
+SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.threshold, RR0=NULL, TEST, PAR=NULL){
   # snp MAP file: chr, pos
   MAP<-matrix(as.numeric(GEN[,1:2]),nrow(GEN),2)
   # chr: snps chr the user wants to scan

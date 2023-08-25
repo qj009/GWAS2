@@ -1,3 +1,4 @@
+# test.HAP need letter code genotype
 # HAP.X: letter code geno matrix, only for the position defined
 #   row: samples, each sample has two rows,
 #   col: snps
