@@ -1,8 +1,31 @@
-# test.HAP need letter code genotype
-# HAP.X: letter code geno matrix, only for the position defined
-#   row: samples, each sample has two rows,
-#   col: snps
-#   GEN.X is not used
+#' Haplotype association statistical test function
+#' @description
+#' This function allows you to do statistical test for selected haplotypes.It is usually used inside the SEL.HAP() function.
+#' @details
+#' Additional details...
+#'
+
+#' @param HAP.X: letter code geno matrix for the position defined. The rows represent samples and each sample has two rows. The columns represent SNPs.
+#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
+
+#' @param method: Association model user want to use. It could be FIXED or RANDOM.
+#' @param PAR: Initial parameters for association test. It can be calculated through function TEST.SCAN().
+
+#' @returns: SEL.HAP function output # a list with three elements:
+#' 1. a list with two elements:
+#'   1) wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value, numbers of haplotypes
+#'   2) liklihood ratio test(lrt) result: statistics, left tail probability(log), P value,numbers of haplotypes
+#' 2. z matrix: code of haplotypes
+#' 3. identified haplotypes (numerical code)
+
+#' @keywords cats
+#' @export
+#' @examples
+#' cat_function()
+
+#
+
 test.HAP<-function(HAP.X,YFIX,KIN,method,PAR){
   n<-nrow(YFIX)
   ##if (method=="FIXED")
