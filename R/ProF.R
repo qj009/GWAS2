@@ -1,3 +1,21 @@
+#' Allele frequency calculation function
+#' @description
+#' This function allows you to calculate allele frequency.
+#' @details
+#' Additional details...
+#'
+#'
+#' @param GG: Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).
+
+#' @returns
+#' It outputs a data frame with three columns: minor allele frequence, major allele, minor allele.
+
+
+#' @keywords
+#' @export
+#' @examples
+#'
+
 # input genotype matrix: row: snp; col: sample (each sample has two columns)
 ProF<-function(GG){
   nm<-dim(GG)

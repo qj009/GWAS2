@@ -6,14 +6,14 @@
 #'
 #'
 #' @param CP: SNP map matrix containing the SNPs genomic positions . It should contain 2 columns: chromosome and base pair positions respectively.
-#' @param xx: genotype matrix in numeric format. Can be calculated from function GEN.CODE(). It should be a list containing two matrix. The first matrix for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is 1 for heterozygous sample, 0 for homozygous sample.The rows represent SNPs. In each matrix, the columns represent samples.
+#' @param xx: genotype matrix in numeric format. Can be calculated from function GEN.CODE(). It should be a list containing two matrix. The first matrix is additive matrix, for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is dominant matrix, 1 for heterozygous sample, 0 for homozygous sample. In each matrix, the rows represent SNPs, and the columns represent samples.
 #' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
 #' @param KIN: Kinship matrix. It can be obtained from KIN() function.
 #' @param method: Association model user want to use. It could be FIXED or RANDOM.
 #' @param PAR: Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
 
 #' @returns
-#' SEL.HAP function output a list containing five element. 1. Wald test result (wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value); 4. independent SNPs counts; 5. adjusted P value threshold;
+#' SEL.HAP function output a list containing five element. 1. Wald test result (wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value); 4. independent SNPs counts; 5. adjusted P value threshold.
 
 #' @keywords
 #' @export

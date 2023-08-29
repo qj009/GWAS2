@@ -1,6 +1,22 @@
-# code genotype as numerical number
-# input genotype matrix (can be generated from GG): row: snp; col: sample (each sample has two columns)
-# output
+#' Numeric coded genotype matrix creation function
+#' @description
+#' This function allows you to convert letter coded genptype matrix into a numeric coded genotype matrix.
+
+#' @details
+#' Additional details...
+#'
+#'
+#' @param GG: Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).
+
+#' @returns
+#' It outputs numeric genotype matrix(s) in list format.It should be a list containing two matrix. The first matrix is additive matrix, for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is dominant matrix, 1 for heterozygous sample, 0 for homozygous sample. In each matrix, the rows represent SNPs, and the columns represent samples.
+
+
+#' @keywords
+#' @export
+#' @examples
+#'
+
 GEN.CODE<-function(GG){
   XAD<-list(list(),list())
   #nm: dimension of GG, row: snp, col: sample *2

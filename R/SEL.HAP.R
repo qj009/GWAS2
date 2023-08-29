@@ -18,7 +18,7 @@
 #' @param PAR: Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
 
 #' @returns
-#' SEL.HAP function output a list containing two element. The first element is FINAL haplotype scanning and test results
+#' SEL.HAP function output a list containing two element. The first element is FINAL haplotype scanning and test results.
 
 #' @keywords cats
 #' @export

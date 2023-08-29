@@ -14,10 +14,10 @@
 
 #' @returns: SEL.HAP function output # a list with three elements:
 #' 1. a list with two elements:
-#'   1) wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value, numbers of haplotypes
-#'   2) liklihood ratio test(lrt) result: statistics, left tail probability(log), P value,numbers of haplotypes
-#' 2. z matrix: code of haplotypes
-#' 3. identified haplotypes (numerical code)
+#'   1) wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value, numbers of haplotypes;
+#'   2) liklihood ratio test(lrt) result: statistics, left tail probability(log), P value,numbers of haplotypes;
+#' 2. z matrix: code of haplotypes;
+#' 3. identified haplotypes (numerical code).
 
 #' @keywords cats
 #' @export

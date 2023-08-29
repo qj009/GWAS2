@@ -1,3 +1,27 @@
+#' SNP statistical test function: RANDOM
+#' @description
+#' This function allows you to do statistical test for selected SNP based on RANDOM method. It is usually used inside the TEST.SCAN() function.
+#' @details
+#' Additional details...
+#'
+
+#' @param z: the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts.The rows represent samples. The columns represent SNPs.
+#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
+#' @param theta: Initial parameters for association test.
+
+#' @returns: the test result out is a three-element list:
+#' 1. wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
+#' 2. liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
+#' 3. parameters: beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value.
+
+
+#' @keywords cats
+#' @export
+#' @examples
+#' cat_function()
+
+#
 RANDOM<-function(z,YFIX,KIN,Theta){
   Loglike<-function(theta){
     xi<-exp(theta)

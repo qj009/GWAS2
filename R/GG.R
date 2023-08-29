@@ -1,6 +1,22 @@
-# get double allele version of genotype data
-# input genotype matrix: row: snps; col: sample;
-# output genotype matirx: row: snp; col: sample (each sample has two columns)
+#' Biallelic genotype matrix creation function
+#' @description
+#' This function allows you to convert single allele letter coded matrix to biallelic genotype matrix. It can only be applied for sample which are pure homozyous.
+
+#' @details
+#' Additional details...
+#'
+#'
+#' @param G.P: Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain one columns (one allele).
+
+#' @returns
+#' It outputs biallelic letter coded genotype matrix.Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).
+
+
+#' @keywords
+#' @export
+#' @examples
+#'
+
 GG<-function(G.P){
   #n: sample counts
   n<-ncol(G.P)

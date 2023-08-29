@@ -1,3 +1,22 @@
+#' RANDOM method initial parameter calculation function
+#' @description
+#' This function allows you to calculate the initial parameter for RANDOM function. It is usually used inside the TEST.SCAN() function.
+#' @details
+#' Additional details...
+#'
+
+#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
+
+
+#' @returns: Initial parameter fn0 which can be used in RANDOM function.
+
+#' @keywords cats
+#' @export
+#' @examples
+#' cat_function()
+
+#
 MIXED<-function(YFIX,KIN){
 
   loglike<-function(theta){
