@@ -13,7 +13,7 @@
 #' @returns: the test result out is a three-element list:
 #' 1. wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
 #' 2. liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
-#' 3. parameters: beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value.
+#' 3. parameters: beta, sigma2, lambda*sigma2, gamma (two elements for heterozygote), standand error(four elements for heterozygote), wald test statistic,wald test P value,lrt statistics, lrt P value,.
 
 
 #' @keywords cats
@@ -147,8 +147,7 @@ RANDOM<-function(z,YFIX,KIN,Theta){
   CLstderr<-tryCatch(chol(stderr), error=function(e) NULL)
   if (is.null(CLstderr)){
     INVstderr<-ginv(stderr)
-  }
-  else{
+  }else{
     INVstderr<-chol2inv(CLstderr)
   }
   wald<-t(gamma)%*%INVstderr%*%gamma

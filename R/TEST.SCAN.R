@@ -6,7 +6,7 @@
 #'
 
 #' @param z: the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts. The rows represent samples. The columns represent SNPs.If z is NULL, then it will calculate PAR.
-#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.
 #' @param KIN: Kinship matrix. It can be obtained from KIN() function.
 
 #' @param method: Association model user want to use. It could be FIXED or RANDOM.

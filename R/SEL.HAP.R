@@ -8,7 +8,7 @@
 #' @param MAP.S: SNP map matrix containing the genomic positions for SNPs the user wants to scan. It should contain 2 columns: chromosome and base pair positions respectively. It can be NULL.
 #' @param POS.S: SNP map index (relevant to the full SNP map file) referring the genomic position information for SNPs which the user want to scan, It should be a vector of numbers. It can be NULL.
 #' @param GEN: Letter code genotype matrix with SNP genomic position information. The rows represent SNPs. The columns represent samples and each sample has two columns. The first two columns are chromosome and base pair positions.
-#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.
 #' @param KIN: Kinship matrix. It can be obtained from KIN() function.
 #' @param nHap: Initial haplotype length user want to start with. The default value is 2.
 #' @param method: Association model user want to use. It could be FIXED or RANDOM.
@@ -18,7 +18,8 @@
 #' @param PAR: Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
 
 #' @returns
-#' SEL.HAP function output a list containing two element. The first element is FINAL haplotype scanning and test results.
+#' SEL.HAP function output a list containing two element. The first element is FINAL haplotype scanning and statistical test results. The second selement is initial haplotype statistical test results.
+#' Final matrix has 9 columns: chrosome, position index of haplotype start SNP, position index haplotype end SNP, position of haplotype start SNP, position haplotype end SNP, statistic,  left tail probability(log), P value, numbers of different haplotypes detected;
 
 #' @keywords cats
 #' @export
@@ -28,6 +29,7 @@
 #
 SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.threshold, RR0=NULL, TEST, PAR=NULL){
   # snp MAP file: chr, pos
+  # matrix(as.numeric(GEN[,1:2]),nrow(GEN),2)
   MAP<-matrix(as.numeric(GEN[,1:2]),nrow(GEN),2)
   # chr: snps chr the user wants to scan
   chr<-unique(c(MAP.S[,1],MAP[POS.S,1]))
@@ -138,7 +140,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
         Later<-do.call('rbind',later)
         # select most significant one according to left tail probability(log) and statistics, respectively.
         POS.PT<-c(which.min(Later[,2]),which.max(Later[,1]))
-        # ??? if statistic level is same, select the one with less snps (shorter haplotype)
+        # if statistic level is same, select the one with less snps (shorter haplotype)
         Pos.LR<-max(POS.PT[1],POS.PT[2-abs(diff(POS.LT))])
         Pos<-POS.T[[Pos.LR]]
         LATER<-Later[Pos.LR,]
@@ -176,7 +178,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
       print(pos.temp)
       if (is.integer(pos.temp)){
         # identify haplotype?
-        R.F<-test.HAP(t(GEN[pos,-(1:2)]),YFIX,KK,method,PAR)
+        R.F<-test.HAP(t(GEN[pos,-(1:2)]),YFIX,KIN,method,PAR)
         #MAP0: chr, position index range, position itself in the range
         MAP0<-c(MAP[pos.r[1],1],pos.r,MAP[pos.r,2])
         rrs<-lapply(R.F[[1]],function(x)c(MAP0,x))
@@ -195,7 +197,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
         # FORMER: the last significant test result
         # WL: all iteration result
         # Note: if initial is not significant, it will output initial result
-        Re<-Extension(Former, pos, POS.CHR, GEN, YFIX, KK, method, ij, p.threshold, RR, PAR)
+        Re<-Extension(Former, pos, POS.CHR, GEN, YFIX, KIN, method, ij, p.threshold, RR, PAR)
         # significant haplotype map information
         pos.detail<-MAP[Re[[1]],1:2]
         # chr, position index, true position in map file, test result

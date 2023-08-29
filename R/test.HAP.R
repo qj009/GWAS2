@@ -6,7 +6,7 @@
 #'
 
 #' @param HAP.X: letter code geno matrix for the position defined. The rows represent samples and each sample has two rows. The columns represent SNPs.
-#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.
 #' @param KIN: Kinship matrix. It can be obtained from KIN() function.
 
 #' @param method: Association model user want to use. It could be FIXED or RANDOM.
@@ -14,8 +14,8 @@
 
 #' @returns: SEL.HAP function output # a list with three elements:
 #' 1. a list with two elements:
-#'   1) wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value, numbers of haplotypes;
-#'   2) liklihood ratio test(lrt) result: statistics, left tail probability(log), P value,numbers of haplotypes;
+#'   1) wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value, numbers of different haplotypes detected;
+#'   2) liklihood ratio test(lrt) result: statistics, left tail probability(log), P value,numbers of different haplotypes detected;
 #' 2. z matrix: code of haplotypes;
 #' 3. identified haplotypes (numerical code).
 
@@ -50,7 +50,7 @@ test.HAP<-function(HAP.X,YFIX,KIN,method,PAR){
   NAME.HAP[1,]<-NAME.hap[2*code-1]
   # haplotype of second chromatid for all sample
   NAME.HAP[2,]<-NAME.hap[2*code]
-  #????
+  #prevent wrong direction concat for haplotype createion
   Min<-apply(NAME.HAP,2,min)
   Max<-apply(NAME.HAP,2,max)
 
