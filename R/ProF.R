@@ -8,13 +8,13 @@
 #' @param GG: Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).
 
 #' @returns
-#' It outputs a data frame with three columns: minor allele frequence, major allele, minor allele.
+#' It outputs a data frame with three columns: minor allele frequency, major allele, minor allele.
 
 
 #' @keywords
 #' @export
 #' @examples
-#'
+#' ProF(GG)
 
 # input genotype matrix: row: snp; col: sample (each sample has two columns)
 ProF<-function(GG){

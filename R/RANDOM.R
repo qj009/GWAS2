@@ -19,7 +19,7 @@
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()
+#' RANDOM(z,YFIX,KIN,Theta)
 
 #
 RANDOM<-function(z,YFIX,KIN,Theta){

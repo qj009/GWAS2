@@ -20,7 +20,7 @@
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()
+#' FIX(z,YFIX,KIN,fn0)
 
 #
 FIX<-function(z,YFIX,KIN,fn0){

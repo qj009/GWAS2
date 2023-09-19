@@ -15,7 +15,7 @@
 #' @keywords
 #' @export
 #' @examples
-#'
+#' GG(G.P)
 
 GG<-function(G.P){
   #n: sample counts

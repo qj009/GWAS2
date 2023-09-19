@@ -21,7 +21,7 @@
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()
+#' TEST.SCAN(YFIX,z,KIN,method,PAR)
 
 #
 

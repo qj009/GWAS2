@@ -14,7 +14,7 @@
 #' @keywords
 #' @export
 #' @examples
-#'
+#' KIN(gencode)
 
 KIN <- function(gencode){
   XX<-lapply(gencode,function(x)t(x))

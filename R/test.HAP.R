@@ -22,7 +22,7 @@
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()
+#' test.HAP(HAP.X,YFIX,KIN,method,PAR)
 
 #
 

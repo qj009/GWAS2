@@ -14,7 +14,7 @@
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()
+#' MIXED(YFIX,KIN)
 
 #
 MIXED<-function(YFIX,KIN){

@@ -24,7 +24,7 @@
 #' @keywords cats
 #' @export
 #' @examples
-#' cat_function()
+#' SEL.HAP(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.threshold, RR0=NULL, TEST, PAR=NULL)
 
 #
 SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.threshold, RR0=NULL, TEST, PAR=NULL){
@@ -81,7 +81,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
   # Former
   # POS: current scanned snp positions (position, position+nHap-1)
   # POS.CHR: all snp position index in current chr (from full map)
-  Extension<-function(Former, POS, POS.CHR, GEN, YFIX, KK, method, test, p.threshold, RR, PAR){
+  Extension<-function(Former, POS, POS.CHR, GEN, YFIX, KIN, method, test, p.threshold, RR, PAR){
     WL<-list(NULL,NULL)
     #test.HAP resutls (wald or lrt) of scanned position
     FORMER<-Former[[test]]
@@ -95,7 +95,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
       R.POS.CHR<-range(POS.CHR)
       # LATER/FORMER: statistics, left tail probability(log), p value, number of haplotype identified
       # loop end rule: LATER[1]<=FORMER[1] or LATER[2]>FORMER[2] or LATER[4]<=FORMER[4]
-      # means: extension will end when this haplotype is not significant  anymore or numbers of haplotype identified less or equal than former?
+      # means: extension will end when this haplotype statistics can not be improved or numbers of haplotype identified less or equal than former
       while ((LATER[1]>FORMER[1] && LATER[2]<=FORMER[2] && LATER[4]>FORMER[4]) | iter==0){
         if (iter>0){
           FORMER<-LATER
@@ -126,7 +126,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
           POS.MAT<-which(RR[[test]][,1]==POS.SE[1] & RR[[test]][,2]==POS.SE[2])
           if (identical(POS.MAT,integer(0))){
             # test haplotype
-            R.LATER<-test.HAP(t(GEN[POS.T[[i]],-(1:2)]),YFIX,KK,method,PAR)
+            R.LATER<-test.HAP(t(GEN[POS.T[[i]],-(1:2)]),YFIX,KIN,method,PAR)
             # add haplotype position index range to the test result
             T.LATER<-lapply(R.LATER[[1]],function(x)c(POS.SE,x))
           }else{
@@ -177,7 +177,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
       pos.temp<-which(RR0.S[,2]==pos.r[1] & RR0.S[,3]==pos.r[2] & RR0.E[,2]==pos.r[1] & RR0.E[,3]==pos.r[2])
       print(pos.temp)
       if (is.integer(pos.temp)){
-        # identify haplotype?
+        # test initial haplotype
         R.F<-test.HAP(t(GEN[pos,-(1:2)]),YFIX,KIN,method,PAR)
         #MAP0: chr, position index range, position itself in the range
         MAP0<-c(MAP[pos.r[1],1],pos.r,MAP[pos.r,2])

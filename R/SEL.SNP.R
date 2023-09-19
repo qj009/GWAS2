@@ -18,7 +18,7 @@
 #' @keywords
 #' @export
 #' @examples
-#'
+#' SEL.SNP(CP, xx, YFIX, KIN, method, PAR=NULL,Effect_SNP_number_adjust = TRUE)
 
 #
 SEL.SNP <- function(CP, xx, YFIX, KIN, method, PAR=NULL,Effect_SNP_number_adjust = TRUE){

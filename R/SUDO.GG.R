@@ -15,7 +15,7 @@
 #' @keywords
 #' @export
 #' @examples
-#'
+#' SUDO.GG(gencode.a)
 
 SUDO.GG <- function(gencode.a){
   gencode.a[which(gencode.a==-1)]="A"

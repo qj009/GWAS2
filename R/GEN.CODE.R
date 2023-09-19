@@ -15,7 +15,7 @@
 #' @keywords
 #' @export
 #' @examples
-#'
+#' GEN.CODE(GG)
 
 GEN.CODE<-function(GG){
   XAD<-list(list(),list())
@@ -27,7 +27,7 @@ GEN.CODE<-function(GG){
   #initial matrix: all 1, 1 row, n columns
   x<-matrix(1,1,n)
   # find major allele for each snp
-  opt<-apply(GG,1,function(x) names(which.max(table(x))))
+  opt<-apply(GG,1,function(x) names((table(x))))
 
   for (i in 1:nm[1]){
     # first allele
@@ -45,6 +45,12 @@ GEN.CODE<-function(GG){
     # the first list for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample
     XAD[[1]][[i]][1,AA]<-1
     XAD[[1]][[i]][1,DD]<-0
+    # set NA as NA
+    NN <- which(is.na(AL) | is.na(AR))
+      if(length(NN)!=0){
+    XAD[[1]][[i]][1,NN] <- NA
+    XAD[[2]][[i]][1,NN] <- NA
+          }
   }
   XX<-lapply(XAD,function(x)do.call('rbind',x))
   storage.mode(XX[[1]])<-"integer"
