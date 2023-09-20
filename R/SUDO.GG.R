@@ -6,7 +6,7 @@
 #' Additional details...
 #'
 #'
-#' @param gencode.a: Genotype matrix with numeric code: -1/1. The rows represent SNPs. The columns represent samples.
+#' @param gencode.a Genotype matrix with numeric code: -1/1. The rows represent SNPs. The columns represent samples.
 
 #' @returns
 #' It outputs sudo letter coded genotype matrix in list format.

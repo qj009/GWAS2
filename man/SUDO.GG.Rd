@@ -7,7 +7,7 @@
 SUDO.GG(gencode.a)
 }
 \arguments{
-\item{gencode.a:}{Genotype matrix with numeric code: -1/1. The rows represent SNPs. The columns represent samples.}
+\item{gencode.a}{Genotype matrix with numeric code: -1/1. The rows represent SNPs. The columns represent samples.}
 }
 \value{
 It outputs sudo letter coded genotype matrix in list format.

@@ -5,13 +5,13 @@
 #' Additional details...
 #'
 
-#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
-#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
+#' @param YFIX Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param KIN Kinship matrix. It can be obtained from KIN() function.
 
 
 #' @returns: Initial parameter fn0 which can be used in RANDOM function.
 
-#' @keywords cats
+#' @keywords
 #' @export
 #' @examples
 #' MIXED(YFIX,KIN)

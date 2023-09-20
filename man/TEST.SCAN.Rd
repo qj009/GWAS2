@@ -7,18 +7,18 @@
 TEST.SCAN(YFIX, z, KIN, method, PAR)
 }
 \arguments{
-\item{z:}{the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts. The rows represent samples. The columns represent SNPs.If z is NULL, then it will calculate PAR.}
+\item{YFIX}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.}
 
-\item{YFIX:}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.}
+\item{z}{the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts. The rows represent samples. The columns represent SNPs.If z is NULL, then it will calculate PAR.}
 
-\item{KIN:}{Kinship matrix. It can be obtained from KIN() function.}
+\item{KIN}{Kinship matrix. It can be obtained from KIN() function.}
 
-\item{method:}{Association model user want to use. It could be FIXED or RANDOM.}
+\item{method}{Association model user want to use. It could be FIXED or RANDOM.}
 
-\item{PAR:}{Initial parameters for association test.}
+\item{PAR}{Initial parameters for association test.}
 }
 \value{
-: the output of TEST.SCAN function depends on the user needs. If no genotype input, it will output initial parameter. If genotype input is provided, it will output statistical test results based on the method user select. The statistical test result out is a three-element list:
+the output of TEST.SCAN function depends on the user needs. If no genotype input, it will output initial parameter. If genotype input is provided, it will output statistical test results based on the method user select. The statistical test result out is a three-element list:
 \enumerate{
 \item wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
 \item liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
@@ -34,4 +34,3 @@ Additional details...
 \examples{
 TEST.SCAN(YFIX,z,KIN,method,PAR)
 }
-\keyword{cats}

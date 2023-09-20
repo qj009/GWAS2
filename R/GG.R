@@ -6,7 +6,7 @@
 #' Additional details...
 #'
 #'
-#' @param G.P: Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain one columns (one allele).
+#' @param G.P Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain one columns (one allele).
 
 #' @returns
 #' It outputs biallelic letter coded genotype matrix.Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).

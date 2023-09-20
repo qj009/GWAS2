@@ -5,19 +5,19 @@
 #' Additional details...
 #'
 
-#' @param z: the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts.The rows represent samples. The columns represent SNPs. If z is NULL, then it will calculate PAR.
-#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
-#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
+#' @param z the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts.The rows represent samples. The columns represent SNPs. If z is NULL, then it will calculate PAR.
+#' @param YFIX Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+#' @param KIN Kinship matrix. It can be obtained from KIN() function.
 
-#' @param fn0: Initial parameters for association test.
+#' @param fn0 Initial parameters for association test.
 
-#' @returns: the test result out is a three-element list:
+#' @returns the test result out is a three-element list:
 #' 1. wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
 #' 2. liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
 #' 3. parameters: beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value.
 
 
-#' @keywords cats
+#' @keywords
 #' @export
 #' @examples
 #' FIX(z,YFIX,KIN,fn0)

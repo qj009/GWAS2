@@ -7,9 +7,9 @@
 MIXED(YFIX, KIN)
 }
 \arguments{
-\item{YFIX:}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.}
+\item{YFIX}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.}
 
-\item{KIN:}{Kinship matrix. It can be obtained from KIN() function.}
+\item{KIN}{Kinship matrix. It can be obtained from KIN() function.}
 }
 \value{
 : Initial parameter fn0 which can be used in RANDOM function.
@@ -23,4 +23,3 @@ Additional details...
 \examples{
 MIXED(YFIX,KIN)
 }
-\keyword{cats}

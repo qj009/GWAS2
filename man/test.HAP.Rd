@@ -7,18 +7,18 @@
 test.HAP(HAP.X, YFIX, KIN, method, PAR)
 }
 \arguments{
-\item{HAP.X:}{letter code geno matrix for the position defined. The rows represent samples and each sample has two rows. The columns represent SNPs.}
+\item{HAP.X}{letter code geno matrix for the position defined. The rows represent samples and each sample has two rows. The columns represent SNPs.}
 
-\item{YFIX:}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.}
+\item{YFIX}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.}
 
-\item{KIN:}{Kinship matrix. It can be obtained from KIN() function.}
+\item{KIN}{Kinship matrix. It can be obtained from KIN() function.}
 
-\item{method:}{Association model user want to use. It could be FIXED or RANDOM.}
+\item{method}{Association model user want to use. It could be FIXED or RANDOM.}
 
-\item{PAR:}{Initial parameters for association test. It can be calculated through function TEST.SCAN().}
+\item{PAR}{Initial parameters for association test. It can be calculated through function TEST.SCAN().}
 }
 \value{
-: SEL.HAP function output # a list with three elements:
+SEL.HAP function output # a list with three elements:
 \enumerate{
 \item a list with two elements:
 }
@@ -40,4 +40,3 @@ Additional details...
 \examples{
 test.HAP(HAP.X,YFIX,KIN,method,PAR)
 }
-\keyword{cats}

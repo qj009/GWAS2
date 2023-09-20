@@ -7,7 +7,7 @@
 GG(G.P)
 }
 \arguments{
-\item{G.P:}{Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain one columns (one allele).}
+\item{G.P}{Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain one columns (one allele).}
 }
 \value{
 It outputs biallelic letter coded genotype matrix.Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).
