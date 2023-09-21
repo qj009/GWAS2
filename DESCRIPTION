@@ -14,9 +14,7 @@ Imports:
     dplyr,
     ggpubr,
     MASS,
-    pchisq,
     plyr,
     stats
 Depends: 
-    optim,
     tidyverse

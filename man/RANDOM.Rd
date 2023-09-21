@@ -13,7 +13,7 @@ RANDOM(z, YFIX, KIN, Theta)
 
 \item{KIN}{Kinship matrix. It can be obtained from KIN() function.}
 
-\item{theta}{Initial parameters for association test.}
+\item{Theta}{Initial parameters for association test.}
 }
 \value{
 the test result out is a three-element list:
