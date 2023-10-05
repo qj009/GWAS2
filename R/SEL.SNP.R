@@ -11,10 +11,10 @@
 #' @param KIN Kinship matrix. It can be obtained from KIN() function.
 #' @param method Association model user want to use. It could be FIXED or RANDOM.
 #' @param PAR Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
-#' @param Effect_SNP_number_adjust .
+#' @param Effect_SNP_number_adjust logical parameter.The default is TRUE. Calculate the true effect SNP numbers or not. If TURE, it will output independent effect SNP numbers. It can only apply to homozygous data currently. Please set to FALSE if the data contain heterouzyous and it will output input SNP numbers.
 
 #' @returns
-#' SEL.HAP function output a list containing five element. 1. Wald test result (chr, pos, wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (chr, pos,statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value); 4. independent SNPs counts; 5. adjusted P value threshold.
+#' SEL.HAP function output a list containing five element. 1. Wald test result (chr, pos, wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (chr, pos,statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value); 4. independent SNP counts; 5. adjusted P value threshold (0.05/independent SNP counts).
 
 #' @keywords
 #' @export
