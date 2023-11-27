@@ -5,26 +5,26 @@
 #' Additional details...
 #'
 #'
-#' @param MAP.S SNP map matrix containing the genomic positions for SNPs the user wants to scan. It should contain 2 columns: chromosome and base pair positions respectively. It can be NULL.
-#' @param POS.S SNP map index (relevant to the full SNP map file) referring the genomic position information for SNPs which the user want to scan, It should be a vector of numbers. It can be NULL.
-#' @param GEN Letter code genotype matrix with SNP genomic position information. The rows represent SNPs. The columns represent samples and each sample has two columns. The first two columns are chromosome and base pair positions.
-#' @param YFIX Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.
-#' @param KIN Kinship matrix. It can be obtained from KIN() function.
-#' @param nHap Initial haplotype length user want to start with. The default value is 2.
-#' @param method Association model user want to use. It could be FIXED or RANDOM.
-#' @param p.threshold The p value threshold for initial significant haplotype selection. It should be a loose threshold to keep more seed haplotype for extension step.
-#' @param RR0 Initial significant haplotype selection result. It can be NULL.
-#' @param TEST The statistical test user want to use for significance test. 1: wald test; 2: lrt test, c(1,2) for both.
-#' @param PAR Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
+#' @param MAP.S: SNP map matrix containing the genomic positions for SNPs the user wants to scan. It should contain 2 columns: chromosome and base pair positions respectively. It can be NULL.
+#' @param POS.S: SNP map index (relevant to the full SNP map file) referring the genomic position information for SNPs which the user want to scan, It should be a vector of numbers. It can be NULL.
+#' @param GEN: Letter code genotype matrix with SNP genomic position information. The rows represent SNPs. The columns represent samples and each sample has two columns. The first two columns are chromosome and base pair positions.
+#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.
+#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
+#' @param nHap: Initial haplotype length user want to start with. The default value is 2.
+#' @param method: Association model user want to use. It could be FIXED or RANDOM.
+#' @param p.threshold: The p value threshold for initial significant haplotype selection. It should be a loose threshold to keep more seed haplotype for extension step.
+#' @param RR0: Initial significant haplotype selection result. It can be NULL.
+#' @param TEST: The statistical test user want to use for significance test. 1: wald test; 2: lrt test, c(1,2) for both.
+#' @param PAR: Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
 
 #' @returns
 #' SEL.HAP function output a list containing two element. The first element is FINAL haplotype scanning and statistical test results. The second selement is initial haplotype statistical test results.
 #' Final matrix has 9 columns: chrosome, position index of haplotype start SNP, position index haplotype end SNP, position of haplotype start SNP, position haplotype end SNP, statistic,  left tail probability(log), P value, numbers of different haplotypes detected;
 
-#' @keywords
+#' @keywords cats
 #' @export
 #' @examples
-#' SEL.HAP(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.threshold, RR0=NULL, TEST, PAR=NULL)
+#' cat_function()
 
 #
 SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.threshold, RR0=NULL, TEST, PAR=NULL){
@@ -81,7 +81,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
   # Former
   # POS: current scanned snp positions (position, position+nHap-1)
   # POS.CHR: all snp position index in current chr (from full map)
-  Extension<-function(Former, POS, POS.CHR, GEN, YFIX, KIN, method, test, p.threshold, RR, PAR){
+  Extension<-function(Former, POS, POS.CHR, GEN, YFIX, KK, method, test, p.threshold, RR, PAR){
     WL<-list(NULL,NULL)
     #test.HAP resutls (wald or lrt) of scanned position
     FORMER<-Former[[test]]
@@ -95,7 +95,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
       R.POS.CHR<-range(POS.CHR)
       # LATER/FORMER: statistics, left tail probability(log), p value, number of haplotype identified
       # loop end rule: LATER[1]<=FORMER[1] or LATER[2]>FORMER[2] or LATER[4]<=FORMER[4]
-      # means: extension will end when this haplotype statistics can not be improved or numbers of haplotype identified less or equal than former
+      # means: extension will end when this haplotype is not significant  anymore or numbers of haplotype identified less or equal than former?
       while ((LATER[1]>FORMER[1] && LATER[2]<=FORMER[2] && LATER[4]>FORMER[4]) | iter==0){
         if (iter>0){
           FORMER<-LATER
@@ -126,7 +126,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
           POS.MAT<-which(RR[[test]][,1]==POS.SE[1] & RR[[test]][,2]==POS.SE[2])
           if (identical(POS.MAT,integer(0))){
             # test haplotype
-            R.LATER<-test.HAP(t(GEN[POS.T[[i]],-(1:2)]),YFIX,KIN,method,PAR)
+            R.LATER<-test.HAP(t(GEN[POS.T[[i]],-(1:2)]),YFIX,KK,method,PAR)
             # add haplotype position index range to the test result
             T.LATER<-lapply(R.LATER[[1]],function(x)c(POS.SE,x))
           }else{
@@ -177,7 +177,8 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
       pos.temp<-which(RR0.S[,2]==pos.r[1] & RR0.S[,3]==pos.r[2] & RR0.E[,2]==pos.r[1] & RR0.E[,3]==pos.r[2])
       print(pos.temp)
       if (is.integer(pos.temp)){
-        # test initial haplotype
+        # identify haplotype?
+        print(paste0("Current chr is ", i, " , Current initial position is ", pos))
         R.F<-test.HAP(t(GEN[pos,-(1:2)]),YFIX,KIN,method,PAR)
         #MAP0: chr, position index range, position itself in the range
         MAP0<-c(MAP[pos.r[1],1],pos.r,MAP[pos.r,2])
