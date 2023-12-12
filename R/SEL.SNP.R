@@ -34,7 +34,7 @@ SEL.SNP <- function(GEN, YFIX, KIN, method, PAR=NULL){
     POS.CHR<-which(CP[,1]==i)
     for (j in POS.CHR){
       POS.S<-CP[j,2]
-      print(paste0("chromosome is ", CHR, ", position is ",POS.S))
+      print(paste0("chromosome is ", i, ", position is ",POS.S))
       gs<-as.matrix(gen[j,])
       n<-nrow(YFIX)
       code<-1:n

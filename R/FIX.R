@@ -123,8 +123,8 @@ FIX<-function(z,YFIX,KIN,fn0){
     sigma2g<-lambda*sigma2
     fn1<-parm$value
 
-    print(fn0)
-    print(fn1)
+    print(paste0("L[0] = ",fn0))
+    print(paste0("L[1] = ",fn1))
 
     non.pos<-1:qx
     g<-beta[-non.pos]
@@ -148,8 +148,9 @@ FIX<-function(z,YFIX,KIN,fn0){
     p.l<-abs(p.l)
     p.lrt<-1-pchisq(lrt,length(g))
     LRT<-c(lrt,p.l,p.lrt)
-    parm<-rep(0,9)
-    parm[3]<-1
+    # parm<-rep(0,9)
+    # parm[3]<-1
+    parm<-c(beta,sigma2,sigma2g,stderr,wald,p_wald,lrt,p_lrt)
     RESULT<-list(WALD,LRT,parm)
     return(RESULT)
   }
