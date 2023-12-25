@@ -13,7 +13,7 @@
 #' @param PAR: Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
 
 #' @returns
-#' SEL.HAP function output a list containing five element. 1. Wald test result (chr, pos, wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (chr, pos,statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, wald test statistic,wald test P value,lrt statistics, lrt P value);
+#' SEL.HAP function output a list containing three element. 1. Wald test result (chr, pos, wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (chr, pos,statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, wald test statistic,wald test P value,lrt statistics, lrt P value);
 
 #' @keywords
 #' @export

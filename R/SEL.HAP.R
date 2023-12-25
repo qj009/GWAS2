@@ -19,7 +19,7 @@
 
 #' @returns
 #' SEL.HAP function output a list containing two element. The first element is FINAL haplotype scanning and statistical test results. The second selement is initial haplotype statistical test results.
-#' Final matrix has 9 columns: chrosome, position index of haplotype start SNP, position index haplotype end SNP, position of haplotype start SNP, position haplotype end SNP, statistic,  left tail probability(log), P value, numbers of different haplotypes detected;
+#' Final matrix has 9 columns: chromosome, position index of haplotype start SNP, position index haplotype end SNP, position of haplotype start SNP, position haplotype end SNP, statistic,  left tail probability(log), P value, numbers of different haplotypes detected;
 
 #' @keywords cats
 #' @export
