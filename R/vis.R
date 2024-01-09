@@ -1,20 +1,42 @@
 #' GWAS visualization function: vis
+
 #' @description
-#'
+#' This function allows you to make manhattan plot containing SNP-based GWAS, initial haplotype scan and Haplotype-based GWAS result.
+
 #' @details
 #' Input file p value column should not contain missing value and 0. If the original p value is 0 (which is too small to calculate by the software), please compute p value manually or set a standard small p value for plot the figure.
 #'
 
-#' @param T.Name:
-#' @param snp_file:
-#' @param hapi_file:
-#' @param hap_file:
-#' @param delim:
-#' @param sig_line:
-#' @returns:
+#' @param T.Name: Phenotype name, shown in the plot name;
+#' @param snp_file: Path of file contain SNP-based GWAS result. The file contain four column: chromosome, base pair position, p value and SNP ID;
+#' @param hapi_file: Path of file contain initial di-SNP GWAS result. The file contain five column: chromosome, start base pair position, end base pair position,p value and SNP ID;
+#' @param hap_file: Path of file contain haplotype-based GWAS final result. The file contain four column: chromosome, start base pair position, end base pair position, p value and SNP ID;
+#' @param delim: Delimiter of input snp, hapi and hap file, default is tab;
+#' @param sig_line: Significant p value threshold;
+#' @param ylim: Maximum number of y axis;
+#' @param snp_sig_size: Point size of significant SNP signals, default is 8;
+#' @param snp_sig_alpha: Point transparence of significant SNP signals, default is 0.8;
+#' @param snp_nosig_size: Point size of non-significant SNP signalsdefault is 1;
+#' @param snp_no_sig_alpha: Point transparence of non-significant SNP signals, default is 0.3;
+#' @param hapi_sig_lineend: Line end style (round, butt, square) of initial haplotype significant signals, default is "round";
+#' @param hapi_sig_linewidth: Line width of initial haplotype significant signals, default is 5;
+#' @param hapi_sig_alpha: Line transparence of initial haplotype significant signals, default is 1;
+#' @param hapi_nosig_lineend: Line end style (round, butt, square) of initial haplotype non-significant signals, default is "round";
+#' @param hapi_nosig_linewidth: Line width of initial haplotype non-significant signals, default is 1;
+#' @param hapi_nosig_alpha: Line transparence of initial haplotype non-significant signals, default is 0.3;
+#' @param hap_sig_lineend: Line end style (round, butt, square) of haplotype significant signals, default is "round";
+#' @param hap_sig_linewidth: Line width of haplotype significant signals, default is 3;
+#' @param hap_sig_alpha: Line transparence of haplotype significant signals, default is 1;
+#' @param hap_nosig_lineend: Line end style (round, butt, square) of haplotype non-significant signals, default is "round";
+#' @param hap_nosig_linewidth: Line width of haplotype non-significant signals, , default is 1;
+#' @param hap_nosig_alpha: Line transparence of haplotype non-significant signals, default is 0.3;
+#' @param snp_color: SNP signal color, default is "#93b5cf";
+#' @param hapi_color: Initial haplotype signal color, default is "#ffa60f";
+#' @param hap_color: Haplotype signal color, default is "#f03752";
+#' @returns: manhattan plot containing SNP-based GWAS, initial haplotype scan and Haplotype-based GWAS result.
 
 
-#' @keywords
+#' @keywords Manhattan plot
 #' @export
 #' @examples
 #'
@@ -89,9 +111,12 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, delim = "\t", sig_line=5e
 
   # Calculate midpoints for chromosome regions
 
-  axis_set <- snp_plot |>
-    group_by(CHROM) |>
+  axis_set <- snp_plot %>%
+    group_by(CHROM) %>%
     dplyr::summarize(center = mean(POS_cum))
+
+  # Cacluate chromsome bountries
+  axis_sep <- snp_plot %>% group_by(CHROM) %>% dplyr::summarize(boundaries  = max(POS_cum))
 
   # Create Manhattan plot with SNPs and intervals
   #
@@ -112,6 +137,10 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, delim = "\t", sig_line=5e
     geom_hline(
       yintercept = -log10(sig_line), color = "red",
       linetype = "dashed") +
+    # add chromosome separation line
+    geom_vline(
+      xintercept = axis_sep$boundaries, color = "grey",
+      linetype = "dotted", alpha = 0.5) +
     # add x-axis label
     scale_x_continuous(label = paste0("chr",axis_set$CHROM),breaks = axis_set$center) +
     # set ylim

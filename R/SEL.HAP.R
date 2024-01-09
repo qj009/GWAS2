@@ -95,7 +95,7 @@ SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.thre
       R.POS.CHR<-range(POS.CHR)
       # LATER/FORMER: statistics, left tail probability(log), p value, number of haplotype identified
       # loop end rule: LATER[1]<=FORMER[1] or LATER[2]>FORMER[2] or LATER[4]<=FORMER[4]
-      # means: extension will end when this haplotype is not significant  anymore or numbers of haplotype identified less or equal than former?
+      # means: extension will end when this effect of haplotype is not increase anymore or numbers of haplotype identified less or equal than former
       while ((LATER[1]>FORMER[1] && LATER[2]<=FORMER[2] && LATER[4]>FORMER[4]) | iter==0){
         if (iter>0){
           FORMER<-LATER
