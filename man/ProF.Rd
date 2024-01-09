@@ -18,6 +18,5 @@ This function allows you to calculate allele frequency.
 \details{
 Additional details...
 }
-\examples{
-ProF(GG)
-}
+\keyword{allele}
+\keyword{frequency}

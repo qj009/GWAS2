@@ -137,7 +137,7 @@ RANDOM<-function(z,YFIX,KIN,Theta){
   ##fn0<-Parm$value
   fn0<-Loglike(-Inf)
   lrt<-2*(fn0-fn1)
-  p_lrt<-1-pchisq(lrt,1)
+  p.lrt<-1-pchisq(lrt,1)
   p.l<-abs(as.numeric(pchisq(lrt,1,log.p=TRUE)))
   CLstderr<-tryCatch(chol(stderr), error=function(e) NULL)
   if (is.null(CLstderr)){
@@ -146,10 +146,10 @@ RANDOM<-function(z,YFIX,KIN,Theta){
     INVstderr<-chol2inv(CLstderr)
   }
   wald<-t(gamma)%*%INVstderr%*%gamma
-  p_wald<-1-pchisq(wald,length(gamma))
+  p.wald<-1-pchisq(wald,length(gamma))
   p.w<-abs(as.numeric(pchisq(wald,length(gamma),log.p=TRUE)))
 
-  parm<-c(beta,sigma2,sigma2g,gamma,stderr,wald,p_wald,lrt,p_lrt)
-  RESULT<-list(c(wald,p.w,p_wald),c(lrt,p.l,p_lrt),parm)
+  parm<-c(beta,sigma2,sigma2g,gamma,stderr,wald,p.wald,lrt,p.lrt)
+  RESULT<-list(c(wald,p.w,p.wald),c(lrt,p.l,p.lrt),parm)
   return(RESULT)
 }

@@ -6,16 +6,16 @@
 #'
 #'
 
-#' @param GEN: Letter code genotype matrix with SNP genomic position information. The rows represent SNPs. The columns represent samples and each sample has two columns. The first two columns are chromosome and base pair positions.
-#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.
-#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
-#' @param method: Association model user want to use. It could be FIXED or RANDOM.
-#' @param PAR: Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
+#' @param GEN Letter code genotype matrix with SNP genomic position information. The rows represent SNPs. The columns represent samples and each sample has two columns. The first two columns are chromosome and base pair positions.
+#' @param YFIX Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.
+#' @param KIN Kinship matrix. It can be obtained from KIN() function.
+#' @param method Association model user want to use. It could be FIXED or RANDOM.
+#' @param PAR Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().
 
 #' @returns
 #' SEL.HAP function output a list containing three element. 1. Wald test result (chr, pos, wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (chr, pos,statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, wald test statistic,wald test P value,lrt statistics, lrt P value);
 
-#' @keywords
+#' @keywords SNP-based GWAS
 #' @export
 #' @examples
 #'

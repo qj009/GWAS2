@@ -18,6 +18,4 @@ This function allows you to calculate kinship matrix.
 \details{
 Additional details...
 }
-\examples{
-KIN(gencode)
-}
+\keyword{kinship}

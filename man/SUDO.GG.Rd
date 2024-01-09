@@ -18,6 +18,7 @@ This function allows you to convert numeric coded genptype matrix into a sudo le
 \details{
 Additional details...
 }
-\examples{
-SUDO.GG(gencode.a)
-}
+\keyword{SUDO}
+\keyword{coded}
+\keyword{genotype}
+\keyword{letter}

@@ -18,6 +18,5 @@ This function allows you to convert single allele letter coded matrix to biallel
 \details{
 Additional details...
 }
-\examples{
-GG(G.P)
-}
+\keyword{Biallelic}
+\keyword{genotype}

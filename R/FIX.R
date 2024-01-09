@@ -144,7 +144,7 @@ FIX<-function(z,YFIX,KIN,fn0){
     LRT<-c(lrt,p.l,p.lrt)
     # parm<-rep(0,9)
     # parm[3]<-1
-    parm<-c(beta,sigma2,sigma2g,stderr,wald,p_wald,lrt,p_lrt)
+    parm<-c(beta,sigma2,sigma2g,stderr,wald,p.wald,lrt,p.lrt)
     RESULT<-list(WALD,LRT,parm)
     return(RESULT)
   }

@@ -18,6 +18,6 @@ This function allows you to convert letter coded genptype matrix into a numeric 
 \details{
 Additional details...
 }
-\examples{
-GEN.CODE(GG)
-}
+\keyword{Numeric}
+\keyword{coded}
+\keyword{genotype}

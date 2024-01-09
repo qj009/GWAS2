@@ -43,7 +43,7 @@ SEL.HAP(
 }
 \value{
 SEL.HAP function output a list containing two element. The first element is FINAL haplotype scanning and statistical test results. The second selement is initial haplotype statistical test results.
-Final matrix has 9 columns: chrosome, position index of haplotype start SNP, position index haplotype end SNP, position of haplotype start SNP, position haplotype end SNP, statistic,  left tail probability(log), P value, numbers of different haplotypes detected;
+Final matrix has 9 columns: chromosome, position index of haplotype start SNP, position index haplotype end SNP, position of haplotype start SNP, position haplotype end SNP, statistic,  left tail probability(log), P value, numbers of different haplotypes detected;
 }
 \description{
 This function allows you to detect target phenotype associated haplotypes.
@@ -51,6 +51,5 @@ This function allows you to detect target phenotype associated haplotypes.
 \details{
 Additional details...
 }
-\examples{
-SEL.HAP(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.threshold, RR0=NULL, TEST, PAR=NULL)
-}
+\keyword{GWAS}
+\keyword{Haplotype-based}
