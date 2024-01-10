@@ -14,7 +14,7 @@
 #' @keywords allele frequency
 #' @export
 #' @examples
-#'
+#' prof <- ProF(gg)
 
 # input genotype matrix: row: snp; col: sample (each sample has two columns)
 ProF<-function(GG){

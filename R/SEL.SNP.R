@@ -18,7 +18,13 @@
 #' @keywords SNP-based GWAS
 #' @export
 #' @examples
-#'
+#' GEN<-as.matrix(GEN)
+#' YFIX <- as.matrix(Y[,2:3])
+#' PAR<-TEST.SCAN(YFIX,NULL,KIN=kin,method,NULL)
+#' CP<-matrix(as.numeric(GEN[,1:2]),nrow(GEN),2)
+#' gen<-cbind(CP,gg)
+#' method<-"RANDOM"
+#' snp_scan <- SEL.SNP(gen, YFIX, KIN=kin, method, PAR=PAR)
 
 #
 SEL.SNP <- function(GEN, YFIX, KIN, method, PAR=NULL){

@@ -24,7 +24,21 @@
 #' @keywords Haplotype-based GWAS
 #' @export
 #' @examples
-#'
+#' GEN<-as.matrix(GEN)
+#' YFIX <- as.matrix(Y[,2:3])
+#' PAR<-TEST.SCAN(YFIX,NULL,KIN=kin,method,NULL)
+#' CP<-matrix(as.numeric(GEN[,1:2]),nrow(GEN),2)
+#' gen<-cbind(CP,gg)
+#' method<-"RANDOM"
+#' P.threshold=3E-06
+#' RR.MULTI<-SEL.HAP(MAP.S=NULL, POS.S=NULL, GEN=gen, YFIX=YFIX, KIN=kin, nHap=2, method=method, p.threshold=P.threshold, RR0=NULL, TEST=c(1,2),PAR=PAR)
+#' # initial haplotype test result
+#' WALD.HapInitial<-RR.MULTI[[2]][[1]]
+#' LRT.HapInitial<-RR.MULTI[[2]][[2]]
+
+#' # Haplotype final result
+#' WALD.FINAL<-RR.MULTI[[1]][[1]]
+#' LRT.FINAL<-RR.MULTI[[1]][[2]]
 
 #
 SEL.HAP<-function(MAP.S=NULL, POS.S=NULL, GEN, YFIX, KIN, nHap=2, method, p.threshold, RR0=NULL, TEST, PAR=NULL){

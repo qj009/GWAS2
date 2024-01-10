@@ -18,4 +18,7 @@ This function allows you to calculate kinship matrix.
 \details{
 Additional details...
 }
+\examples{
+kin<-KIN(xx)
+}
 \keyword{kinship}

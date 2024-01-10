@@ -14,7 +14,9 @@
 #' @keywords Biallelic genotype
 #' @export
 #' @examples
-#'
+#' GEN<-as.matrix(GEN)
+#' GEN.GG <- GEN[,-(1:2)]
+#' gg<-GG(GEN.GG)
 
 GG<-function(G.P){
   #n: sample counts

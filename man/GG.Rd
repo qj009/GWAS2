@@ -18,5 +18,10 @@ This function allows you to convert single allele letter coded matrix to biallel
 \details{
 Additional details...
 }
+\examples{
+GEN<-as.matrix(GEN)
+GEN.GG <- GEN[,-(1:2)]
+gg<-GG(GEN.GG)
+}
 \keyword{Biallelic}
 \keyword{genotype}

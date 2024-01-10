@@ -15,7 +15,7 @@
 #' @keywords SUDO letter coded genotype
 #' @export
 #' @examples
-#'
+#' sudo.gg <- SUDO.GG(xx)
 
 SUDO.GG <- function(gencode.a){
   gencode.a[which(gencode.a==-1)]="A"

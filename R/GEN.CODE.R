@@ -15,7 +15,7 @@
 #' @keywords Numeric coded genotype
 #' @export
 #' @examples
-#'
+#' xx<-GEN.CODE(gg)
 
 GEN.CODE<-function(GG){
   XAD<-list(list(),list())

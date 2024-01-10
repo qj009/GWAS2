@@ -8,10 +8,9 @@
 #'
 
 #' @param T.Name Phenotype name, shown in the plot name;
-#' @param snp_file Path of file contain SNP-based GWAS result. The file contain four column: chromosome, base pair position, p value and SNP ID;
-#' @param hapi_file Path of file contain initial di-SNP GWAS result. The file contain five column: chromosome, start base pair position, end base pair position,p value and SNP ID;
-#' @param hap_file Path of file contain haplotype-based GWAS final result. The file contain four column: chromosome, start base pair position, end base pair position, p value and SNP ID;
-#' @param delim Delimiter of input snp, hapi and hap file, default is tab;
+#' @param snp_file SNP-based GWAS result. The table contain four column: chromosome, base pair position, p value and SNP ID;
+#' @param hapi_file Initial di-SNP GWAS result. The table contain five column: chromosome, start base pair position, end base pair position,p value and SNP ID;
+#' @param hap_file Haplotype-based GWAS final result. The table contain four column: chromosome, start base pair position, end base pair position, p value and SNP ID;
 #' @param sig_line Significant p value threshold;
 #' @param ylim Maximum number of y axis;
 #' @param snp_sig_size Point size of significant SNP signals, default is 8;
@@ -39,9 +38,10 @@
 #' @keywords Manhattan plot
 #' @export
 #' @examples
-#'
+#' T.Name<-"LD"
+#' p <- vis(T.Name, snp_file, hapi_file, hap_file, sig_line=3e-06, ylim=9)
 
-vis <- function(T.Name, snp_file, hapi_file, hap_file, delim = "\t", sig_line=5e-08, ylim,
+vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
                 snp_sig_size = 8, snp_sig_alpha = 0.8, snp_nosig_size=1, snp_no_sig_alpha=0.3,
                 hapi_sig_lineend="round", hapi_sig_linewidth=5,hapi_sig_alpha = 1,
                 hapi_nosig_lineend="round", hapi_nosig_linewidth=1,hapi_nosig_alpha =0.3,
@@ -51,7 +51,7 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, delim = "\t", sig_line=5e
   print(paste0("pheno type is ",T.Name))
 
   # Example SNP data (replace this with your own SNP data)
-  snp <-read_delim(snp_file,delim = delim)
+  snp <-snp_file
   colnames(snp) <- c("CHROM","POS","P","ID")
   snp_plot <- snp[which(snp$P!=0),]
   snp_plot <- snp_plot %>% mutate(sig = ifelse(P<sig_line,"sig","nosig"))
@@ -69,7 +69,7 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, delim = "\t", sig_line=5e
   snp_plot_sub <- snp_plot[which(snp_plot$CHROM %in% c(1,2)),]
 
   # Example di-snp data (replace this with your own interval data)
-  hapi <- read_delim(hapi_file,delim = delim)
+  hapi <- hapi_file
   hapi_plot <- hapi %>% dplyr::select(chr, start,end, p)
   colnames(hapi_plot) <- c("CHROM","START","END","P")
   #hapi_plot$CHROM <- paste0("chr",hapi_plot$CHROM)
@@ -92,7 +92,7 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, delim = "\t", sig_line=5e
   hapi_plot_sub <- hapi_plot[which(hapi_plot$CHROM %in% c(1,2)),]
 
   #haplotype
-  hap <- read_delim(hap_file,delim = delim)
+  hap <- hap_file
   hap_plot <- hap %>% dplyr::select(chr, start,end, p)
   colnames(hap_plot) <- c("CHROM","START","END","P")
   #hap_plot$CHROM <- paste0("chr",hap_plot$CHROM)
