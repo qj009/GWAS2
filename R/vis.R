@@ -9,8 +9,8 @@
 
 #' @param T.Name Phenotype name, shown in the plot name;
 #' @param snp_file SNP-based GWAS result. The table contain four column: chromosome, base pair position, p value and SNP ID;
-#' @param hapi_file Initial di-SNP GWAS result. The table contain five column: chromosome, start base pair position, end base pair position,p value and SNP ID;
-#' @param hap_file Haplotype-based GWAS final result. The table contain four column: chromosome, start base pair position, end base pair position, p value and SNP ID;
+#' @param hapi_file Initial di-SNP GWAS result. The table contain five column: chromosome, start base pair position, end base pair position,p value and haplotype ID;
+#' @param hap_file Haplotype-based GWAS final result. The table contain four column: chromosome, start base pair position, end base pair position, p value and haplotype ID;
 #' @param sig_line Significant p value threshold;
 #' @param ylim Maximum number of y axis;
 #' @param snp_sig_size Point size of significant SNP signals, default is 8;
@@ -32,12 +32,32 @@
 #' @param snp_color SNP signal color, default is "#93b5cf";
 #' @param hapi_color Initial haplotype signal color, default is "#ffa60f";
 #' @param hap_color Haplotype signal color, default is "#f03752";
+#' @param GWAS1_name SNP GWAS label, default is "SNP";
+#' @param GWAS2_name Initial haplotype GWAS label, default is "Initial haplotype";
+#' @param GWAS3_name Haplotype GWAS label, default is "Haplotype";
 #' @returns manhattan plot containing SNP-based GWAS, initial haplotype scan and Haplotype-based GWAS result.
 
 
 #' @keywords Manhattan plot
 #' @export
+#' @import tidyverse
+#' @import ggplot2
+#' @import dplyr
+#'
 #' @examples
+#' library(googledrive)
+#' SNP_ID <-  drive_get(as_id("1L4K1bKKDVu8Z2v74nFjRAkcKs6tlASYh"))
+#' drive_download(SNP_ID, overwrite = TRUE)
+#' (load(file="snp_file.rda"))
+#'
+#' hapi_ID <-  drive_get(as_id("1Pgzl_ARDzQa49mOq8TY1L0vQf6A3J8GC"))
+#' drive_download(hapi_ID, overwrite = TRUE)
+#' (load(file="hapi_file.rda"))
+#'
+#' hap_ID <-  drive_get(as_id("1snvV-WJ6LcCAbP47NVFNfbmTXvdOy3kA/"))
+#' drive_download(hap_ID, overwrite = TRUE)
+#' (load(file="hap_file.rda"))
+#'
 #' T.Name<-"LD"
 #' p <- vis(T.Name, snp_file, hapi_file, hap_file, sig_line=3e-06, ylim=9)
 
@@ -47,7 +67,7 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
                 hapi_nosig_lineend="round", hapi_nosig_linewidth=1,hapi_nosig_alpha =0.3,
                 hap_sig_lineend="round", hap_sig_linewidth=3,hap_sig_alpha = 1,
                 hap_nosig_lineend="round", hap_nosig_linewidth=1,hap_nosig_alpha =0.3,
-                snp_color = "#93b5cf", hapi_color= "#ffa60f", hap_color = "#f03752"){
+                snp_color = "#93b5cf", hapi_color= "#ffa60f", hap_color = "#f03752", GWAS1_name = "SNP", GWAS2_name = "Initial haplotype", GWAS3_name = "Haplotype"){
   print(paste0("pheno type is ",T.Name))
 
   # Example SNP data (replace this with your own SNP data)
@@ -69,9 +89,9 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
   snp_plot_sub <- snp_plot[which(snp_plot$CHROM %in% c(1,2)),]
 
   # Example di-snp data (replace this with your own interval data)
-  hapi <- hapi_file
-  hapi_plot <- hapi %>% dplyr::select(chr, start,end, p)
-  colnames(hapi_plot) <- c("CHROM","START","END","P")
+  hapi_plot <- hapi_file
+  #hapi_plot <- hapi %>% dplyr::select(chr, start,end, p)
+  colnames(hapi_plot) <- c("CHROM","START","END","P","ID")
   #hapi_plot$CHROM <- paste0("chr",hapi_plot$CHROM)
   hapi_plot <- hapi_plot[which(hapi_plot$P!=0),]
   # set.seed(2022)
@@ -92,9 +112,9 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
   hapi_plot_sub <- hapi_plot[which(hapi_plot$CHROM %in% c(1,2)),]
 
   #haplotype
-  hap <- hap_file
-  hap_plot <- hap %>% dplyr::select(chr, start,end, p)
-  colnames(hap_plot) <- c("CHROM","START","END","P")
+  hap_plot <- hap_file
+  #hap_plot <- hap %>% dplyr::select(chr, start,end, p)
+  colnames(hap_plot) <- c("CHROM","START","END","P","ID")
   #hap_plot$CHROM <- paste0("chr",hap_plot$CHROM)
   hap_plot <- hap_plot[which(hap_plot$P!=0),]
   hap_plot <- hap_plot %>% mutate(sig = ifelse(P<sig_line,"sig","nosig"))
@@ -122,17 +142,17 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
   #
   p <- ggplot() +
     # snp sig
-    geom_point(data = snp_plot %>% filter(sig=="sig"), aes(x = POS_cum, y = -log10(P),color = "SNP"), size = snp_sig_size, alpha = snp_sig_alpha,show.legend=TRUE) +
+    geom_point(data = snp_plot %>% filter(sig=="sig"), aes(x = POS_cum, y = -log10(P),color = GWAS1_name), size = snp_sig_size, alpha = snp_sig_alpha,show.legend=TRUE) +
     # snp no sig
-    geom_point(data = snp_plot %>% filter(sig=="nosig"), aes(x = POS_cum, y = -log10(P),color = "SNP"), size = snp_nosig_size, alpha = snp_no_sig_alpha,show.legend	=TRUE) +
+    geom_point(data = snp_plot %>% filter(sig=="nosig"), aes(x = POS_cum, y = -log10(P),color = GWAS1_name), size = snp_nosig_size, alpha = snp_no_sig_alpha,show.legend	=TRUE) +
     # di-SNP sig
-    geom_segment(data = hapi_plot %>% filter(sig=="sig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = "di-SNP"), lineend = hapi_sig_lineend, linewidth= hapi_sig_linewidth,alpha = hapi_sig_alpha,show.legend	=TRUE) +
+    geom_segment(data = hapi_plot %>% filter(sig=="sig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS2_name), lineend = hapi_sig_lineend, linewidth= hapi_sig_linewidth,alpha = hapi_sig_alpha,show.legend	=TRUE) +
     # di-SNP nosig
-    geom_segment(data = hapi_plot %>% filter(sig=="nosig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = "di-SNP"), lineend = hapi_nosig_lineend,linewidth = hapi_nosig_linewidth, alpha = hapi_nosig_alpha,show.legend	=TRUE) +
+    geom_segment(data = hapi_plot %>% filter(sig=="nosig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS2_name), lineend = hapi_nosig_lineend,linewidth = hapi_nosig_linewidth, alpha = hapi_nosig_alpha,show.legend	=TRUE) +
     # hap sig
-    geom_segment(data = hap_plot %>% filter(sig=="sig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = "Haplotype"), lineend = hap_sig_lineend,linewidth = hap_sig_linewidth,alpha = hap_sig_alpha, show.legend	=TRUE) +
+    geom_segment(data = hap_plot %>% filter(sig=="sig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS3_name), lineend = hap_sig_lineend,linewidth = hap_sig_linewidth,alpha = hap_sig_alpha, show.legend	=TRUE) +
     # hap no sig
-    geom_segment(data = hap_plot %>% filter(sig=="nosig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = "Haplotype"), lineend = hap_nosig_lineend,linewidth = hap_nosig_linewidth,alpha = hap_nosig_alpha,show.legend	=TRUE) +
+    geom_segment(data = hap_plot %>% filter(sig=="nosig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS3_name), lineend = hap_nosig_lineend,linewidth = hap_nosig_linewidth,alpha = hap_nosig_alpha,show.legend	=TRUE) +
     # add significant line
     geom_hline(
       yintercept = -log10(sig_line), color = "red",
@@ -142,13 +162,13 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
       xintercept = axis_sep$boundaries, color = "grey",
       linetype = "dotted", alpha = 0.5) +
     # add x-axis label
-    scale_x_continuous(label = paste0("chr",axis_set$CHROM),breaks = axis_set$center) +
+    scale_x_continuous(labels = paste0("chr",axis_set$CHROM),breaks = axis_set$center) +
     # set ylim
     scale_y_continuous(expand = c(0, 0), limits = c(0, ylim)) +
     # add legend
-    scale_color_manual(breaks = c("SNP", "di-SNP", "Haplotype"),values = c(snp_color, hapi_color,hap_color), name = "Data Type") +
+    scale_color_manual(breaks = c(GWAS1_name, GWAS2_name, GWAS3_name),values = c(snp_color, hapi_color,hap_color), name = "Data Type") +
     # add plot title
-    ggtitle(paste0("Manhattan plot of SNP, di-SNP, Haplotype of ", T.Name)) +
+    ggtitle(paste0("Manhattan plot of ",GWAS1_name, ", ", GWAS2_name," and ", GWAS3_name," for ", T.Name)) +
     # add x and y title
     labs(x = "Chromsome", y = expression(-log[10]*P)) +
     theme_minimal()

@@ -7,18 +7,18 @@
 TEST.SCAN(YFIX, z, KIN, method, PAR)
 }
 \arguments{
-\item{z:}{the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts. The rows represent samples. The columns represent SNPs.If z is NULL, then it will calculate PAR.}
+\item{YFIX}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.}
 
-\item{YFIX:}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.}
+\item{z}{the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts. The rows represent samples. The columns represent SNPs.If z is NULL, then it will calculate PAR.}
 
-\item{KIN:}{Kinship matrix. It can be obtained from KIN() function.}
+\item{KIN}{Kinship matrix. It can be obtained from KIN() function.}
 
-\item{method:}{Association model user want to use. It could be FIXED or RANDOM.}
+\item{method}{Association model user want to use. It could be FIXED or RANDOM.}
 
-\item{PAR:}{Initial parameters for association test.}
+\item{PAR}{Initial parameters for association test.}
 }
 \value{
-: the output of TEST.SCAN function depends on the user needs. If no genotype input, it will output initial parameter. If genotype input is provided, it will output statistical test results based on the method user select. The statistical test result out is a three-element list:
+the output of TEST.SCAN function depends on the user needs. If no genotype input, it will output initial parameter. If genotype input is provided, it will output statistical test results based on the method user select. The statistical test result out is a three-element list:
 \enumerate{
 \item wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
 \item liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
@@ -32,6 +32,19 @@ This function allows you to do statistical test for selected SNP with user selec
 Additional details...
 }
 \examples{
+library(googledrive)
+GEN_ID <-  drive_get(as_id("1VPLHa9QWiiey4N5jaUOc516xXo22_fVi"))
+drive_download(GEN_ID, overwrite = TRUE)
+(load(file="GEN.rda"))
+
+Y_ID <-  drive_get(as_id("1AF3XGQr-MwsR928NRLM5X6SwYx20NcUA"))
+drive_download(Y_ID, overwrite = TRUE)
+(load(file="Y.rda"))
+
+GEN.GG <- GEN[,-(1:2)]
+gg<-GG(GEN.GG)
+xx<-GEN.CODE(gg)
+kin<-KIN(xx)
 YFIX <- as.matrix(Y[,2:3])
 method="RANDOM"
 PAR<-TEST.SCAN(YFIX,NULL,KIN=kin,method,NULL)

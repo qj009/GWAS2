@@ -9,7 +9,6 @@ vis(
   snp_file,
   hapi_file,
   hap_file,
-  delim = "\\t",
   sig_line = 5e-08,
   ylim,
   snp_sig_size = 8,
@@ -30,19 +29,20 @@ vis(
   hap_nosig_alpha = 0.3,
   snp_color = "#93b5cf",
   hapi_color = "#ffa60f",
-  hap_color = "#f03752"
+  hap_color = "#f03752",
+  GWAS1_name = "SNP",
+  GWAS2_name = "Initial haplotype",
+  GWAS3_name = "Haplotype"
 )
 }
 \arguments{
 \item{T.Name}{Phenotype name, shown in the plot name;}
 
-\item{snp_file}{Path of file contain SNP-based GWAS result. The file contain four column: chromosome, base pair position, p value and SNP ID;}
+\item{snp_file}{SNP-based GWAS result. The table contain four column: chromosome, base pair position, p value and SNP ID;}
 
-\item{hapi_file}{Path of file contain initial di-SNP GWAS result. The file contain five column: chromosome, start base pair position, end base pair position,p value and SNP ID;}
+\item{hapi_file}{Initial di-SNP GWAS result. The table contain five column: chromosome, start base pair position, end base pair position,p value and haplotype ID;}
 
-\item{hap_file}{Path of file contain haplotype-based GWAS final result. The file contain four column: chromosome, start base pair position, end base pair position, p value and SNP ID;}
-
-\item{delim}{Delimiter of input snp, hapi and hap file, default is tab;}
+\item{hap_file}{Haplotype-based GWAS final result. The table contain four column: chromosome, start base pair position, end base pair position, p value and haplotype ID;}
 
 \item{sig_line}{Significant p value threshold;}
 
@@ -85,6 +85,12 @@ vis(
 \item{hapi_color}{Initial haplotype signal color, default is "#ffa60f";}
 
 \item{hap_color}{Haplotype signal color, default is "#f03752";}
+
+\item{GWAS1_name}{SNP GWAS label, default is "SNP";}
+
+\item{GWAS2_name}{Initial haplotype GWAS label, default is "Initial haplotype";}
+
+\item{GWAS3_name}{Haplotype GWAS label, default is "Haplotype";}
 }
 \value{
 manhattan plot containing SNP-based GWAS, initial haplotype scan and Haplotype-based GWAS result.
@@ -94,6 +100,23 @@ This function allows you to make manhattan plot containing SNP-based GWAS, initi
 }
 \details{
 Input file p value column should not contain missing value and 0. If the original p value is 0 (which is too small to calculate by the software), please compute p value manually or set a standard small p value for plot the figure.
+}
+\examples{
+library(googledrive)
+SNP_ID <-  drive_get(as_id("1L4K1bKKDVu8Z2v74nFjRAkcKs6tlASYh"))
+drive_download(SNP_ID, overwrite = TRUE)
+(load(file="snp_file.rda"))
+
+hapi_ID <-  drive_get(as_id("1Pgzl_ARDzQa49mOq8TY1L0vQf6A3J8GC"))
+drive_download(hapi_ID, overwrite = TRUE)
+(load(file="hapi_file.rda"))
+
+hap_ID <-  drive_get(as_id("1snvV-WJ6LcCAbP47NVFNfbmTXvdOy3kA/"))
+drive_download(hap_ID, overwrite = TRUE)
+(load(file="hap_file.rda"))
+
+T.Name<-"LD"
+p <- vis(T.Name, snp_file, hapi_file, hap_file, sig_line=3e-06, ylim=9)
 }
 \keyword{Manhattan}
 \keyword{plot}
