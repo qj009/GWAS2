@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of GWAS2 is to ...
+The goal of GWAS2 is to perform Haplotype-based GWAS.
 
 ## Installation
 
@@ -33,23 +33,146 @@ devtools::install_github("qj009/GWAS2")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+### Load GWAS2 package into environment 
+
+```{r load, eval=FALSE}
 library(GWAS2)
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+### Load example Arabidopsis data: 
 
-```{r cars}
-summary(cars)
+```{r example, eval=FALSE}
+library(googledrive)
+# genotype data
+GEN_ID <-  drive_get(as_id("1VPLHa9QWiiey4N5jaUOc516xXo22_fVi"))
+drive_download(GEN_ID, overwrite = TRUE)
+(load(file="GEN.rda"))
+
+# phenotype data
+Y_ID <-  drive_get(as_id("1AF3XGQr-MwsR928NRLM5X6SwYx20NcUA"))
+drive_download(Y_ID, overwrite = TRUE)
+(load(file="Y.rda"))
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+### Prepare data for GWAS: 
 
-You can also embed plots, for example:
+Generate biallelic genotype matrix from original dataset:
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r, eval=FALSE}
+GEN.GG <- GEN[,-(1:2)]
+gg<-GG(GEN.GG)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+Generate numerical format genotype matrix from biallelic data:  
+
+```{r, eval=FALSE}
+xx<-GEN.CODE(gg)
+```
+
+Calculate kinship matrix: 
+
+```{r, eval=FALSE}
+kin<-KIN(xx)
+```
+
+Generate SNP map file
+
+```{r, eval=FALSE}
+CP<-matrix(as.numeric(GEN[,1:2]),nrow(GEN),2)
+```
+
+Generate genotype matrix used for GWAS 
+
+```{r, eval=FALSE}
+gen<-cbind(CP,gg)
+```
+
+Generate phenotype matrix used for GWAS: 
+
+```{r, eval=FALSE}
+YFIX <- as.matrix(Y[,2:3])
+```
+
+Define association model:
+```{r, eval=FALSE}
+method<-"RANDOM"
+```
+
+Calculate initial parameters for association test
+
+```{r, eval=FALSE}
+PAR<-TEST.SCAN(YFIX,NULL,KIN=kin,method,NULL)
+```
+
+### SNP-based GWAS: 
+
+```{r SNP-GWAS,eval=FALSE}
+snp_scan <- SEL.SNP(gen, YFIX, KIN=kin, method, PAR=PAR)
+```
+
+### Haplotype-based GWAS: 
+
+```{r Haplotype-GWAS,eval=FALSE}
+CN <- 16471 # Effective number of markers
+P.threshold = 1/CN
+RR.MULTI<-SEL.HAP(MAP.S=NULL, POS.S=NULL,GEN=gen, 
+                  YFIX=YFIX, KIN=kin, nHap=2,method=method, 
+                  p.threshold=P.threshold, RR0=NULL,TEST=c(1,2),PAR=PAR)
+```
+
+Initial haplotype test result:
+
+```{r, eval=FALSE}
+WALD.HapInitial<-RR.MULTI[[2]][[1]]
+LRT.HapInitial<-RR.MULTI[[2]][[2]]
+```
+
+Haplotype final result:
+
+```{r, eval=FALSE}
+WALD.FINAL<-RR.MULTI[[1]][[1]]
+LRT.FINAL<-RR.MULTI[[1]][[2]]
+```
+
+### Visulization: 
+
+Here we take results based on Wald test as an example.  
+
+Generate map file of SNP and Haplotype-based GWAS result:
+
+SNP
+
+```{r, eval=FALSE}
+snp <- as.data.frame(snp_scan[[1]])
+snp_map <- snp %>% dplyr::select(X1,X2,X5) %>% mutate(id = paste0("chr",X1,":",X2))
+colnames(snp_map) <- c("chr", "pos","p","id")
+```
+
+Initial Haplotype
+
+```{r, eval=FALSE}
+hapi <- WALD.HapInitial
+hapi_map <- hapi %>% dplyr::select(X1,X4,X5,X8) %>% mutate(id = paste0("chr",X1,":",X4,"_",X5))
+colnames(hapi_map) <- c("chr", "start","end","p","id")
+```
+
+Final Haplotype
+```{r, eval=FALSE}
+hap <-WALD.FINAL
+hap_map <- hap %>% dplyr::select(X1,X4,X5,X8) %>% mutate(id = paste0("chr",X1,":",X4,"_",X5))
+colnames(hap_map) <- c("chr", "start","end","p","id")
+```
+
+Generate combined Manhattan plot:
+
+```{r, eval=FALSE}
+T.Name = "LD"
+sig_line = 3E-06
+ylim = 9
+vis(T.Name, snp_map, hapi_map, hap_map, sig_line=sig_line, ylim)
+```
+
+ ![](man/figures/LD.FWALD.SNP.HAPI.HAP_manhattan_clear.png)
+[Download the PDF](https://drive.google.com/file/d/1W0hsMJW0k8fLVR58KOr3Vt21iiJhDIsQ/view?usp=drive_link)
+
+

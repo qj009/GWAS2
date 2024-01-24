@@ -6,7 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of GWAS2 is to …
+The goal of GWAS2 is to perform Haplotype-based GWAS.
 
 ## Installation
 
@@ -22,42 +22,146 @@ devtools::install_github("qj009/GWAS2")
 
 This is a basic example which shows you how to solve a common problem:
 
+### Load GWAS2 package into environment
+
 ``` r
 library(GWAS2)
-#> Loading required package: tidyverse
-#> ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-#> ✔ dplyr     1.1.4     ✔ readr     2.1.4
-#> ✔ forcats   1.0.0     ✔ stringr   1.5.1
-#> ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
-#> ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
-#> ✔ purrr     1.0.2     
-#> ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-#> ✖ dplyr::filter() masks stats::filter()
-#> ✖ dplyr::lag()    masks stats::lag()
-#> ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+### Load example Arabidopsis data:
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+library(googledrive)
+# genotype data
+GEN_ID <-  drive_get(as_id("1VPLHa9QWiiey4N5jaUOc516xXo22_fVi"))
+drive_download(GEN_ID, overwrite = TRUE)
+(load(file="GEN.rda"))
+
+# phenotype data
+Y_ID <-  drive_get(as_id("1AF3XGQr-MwsR928NRLM5X6SwYx20NcUA"))
+drive_download(Y_ID, overwrite = TRUE)
+(load(file="Y.rda"))
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
+### Prepare data for GWAS:
 
-You can also embed plots, for example:
+Generate biallelic genotype matrix from original dataset:
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+``` r
+GEN.GG <- GEN[,-(1:2)]
+gg<-GG(GEN.GG)
+```
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+Generate numerical format genotype matrix from biallelic data:
+
+``` r
+xx<-GEN.CODE(gg)
+```
+
+Calculate kinship matrix:
+
+``` r
+kin<-KIN(xx)
+```
+
+Generate SNP map file
+
+``` r
+CP<-matrix(as.numeric(GEN[,1:2]),nrow(GEN),2)
+```
+
+Generate genotype matrix used for GWAS
+
+``` r
+gen<-cbind(CP,gg)
+```
+
+Generate phenotype matrix used for GWAS:
+
+``` r
+YFIX <- as.matrix(Y[,2:3])
+```
+
+Define association model:
+
+``` r
+method<-"RANDOM"
+```
+
+Calculate initial parameters for association test
+
+``` r
+PAR<-TEST.SCAN(YFIX,NULL,KIN=kin,method,NULL)
+```
+
+### SNP-based GWAS:
+
+``` r
+snp_scan <- SEL.SNP(gen, YFIX, KIN=kin, method, PAR=PAR)
+```
+
+### Haplotype-based GWAS:
+
+``` r
+CN <- 16471 # Effective number of markers
+P.threshold = 1/CN
+RR.MULTI<-SEL.HAP(MAP.S=NULL, POS.S=NULL,GEN=gen, 
+                  YFIX=YFIX, KIN=kin, nHap=2,method=method, 
+                  p.threshold=P.threshold, RR0=NULL,TEST=c(1,2),PAR=PAR)
+```
+
+Initial haplotype test result:
+
+``` r
+WALD.HapInitial<-RR.MULTI[[2]][[1]]
+LRT.HapInitial<-RR.MULTI[[2]][[2]]
+```
+
+Haplotype final result:
+
+``` r
+WALD.FINAL<-RR.MULTI[[1]][[1]]
+LRT.FINAL<-RR.MULTI[[1]][[2]]
+```
+
+### Visulization:
+
+Here we take results based on Wald test as an example.
+
+Generate map file of SNP and Haplotype-based GWAS result:
+
+SNP
+
+``` r
+snp <- as.data.frame(snp_scan[[1]])
+snp_map <- snp %>% dplyr::select(X1,X2,X5) %>% mutate(id = paste0("chr",X1,":",X2))
+colnames(snp_map) <- c("chr", "pos","p","id")
+```
+
+Initial Haplotype
+
+``` r
+hapi <- WALD.HapInitial
+hapi_map <- hapi %>% dplyr::select(X1,X4,X5,X8) %>% mutate(id = paste0("chr",X1,":",X4,"_",X5))
+colnames(hapi_map) <- c("chr", "start","end","p","id")
+```
+
+Final Haplotype
+
+``` r
+hap <-WALD.FINAL
+hap_map <- hap %>% dplyr::select(X1,X4,X5,X8) %>% mutate(id = paste0("chr",X1,":",X4,"_",X5))
+colnames(hap_map) <- c("chr", "start","end","p","id")
+```
+
+Generate combined Manhattan plot:
+
+``` r
+T.Name = "LD"
+sig_line = 3E-06
+ylim = 9
+vis(T.Name, snp_map, hapi_map, hap_map, sig_line=sig_line, ylim)
+```
+
+![](man/figures/LD.FWALD.SNP.HAPI.HAP_manhattan_clear.png) [Download the
+PDF](https://drive.google.com/file/d/1W0hsMJW0k8fLVR58KOr3Vt21iiJhDIsQ/view?usp=drive_link)

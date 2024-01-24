@@ -43,7 +43,7 @@
 #' @import tidyverse
 #' @import ggplot2
 #' @import dplyr
-#'
+
 
 
 vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
@@ -64,55 +64,42 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
   snp_data_cum <- snp_plot %>%
     group_by(CHROM) %>%
     dplyr::summarise(max_bp = max(POS)) %>%
-    mutate(bp_add = lag(cumsum(max_bp), default = 0)) %>%
+    mutate(bp_add = dplyr::lag(cumsum(max_bp), default = 0)) %>%
     dplyr::select(CHROM, bp_add)
 
-  snp_plot <- snp_plot %>%
-    inner_join(snp_data_cum, by = "CHROM") %>%
+  snp_plot <- snp_plot %>% inner_join(snp_data_cum, by = "CHROM") %>%
     mutate(POS_cum = POS + bp_add)
-
-  snp_plot_sub <- snp_plot[which(snp_plot$CHROM %in% c(1,2)),]
 
   # Example di-snp data (replace this with your own interval data)
   hapi_plot <- hapi_file
-  #hapi_plot <- hapi %>% dplyr::select(chr, start,end, p)
   colnames(hapi_plot) <- c("CHROM","START","END","P","ID")
-  #hapi_plot$CHROM <- paste0("chr",hapi_plot$CHROM)
   hapi_plot <- hapi_plot[which(hapi_plot$P!=0),]
-  # set.seed(2022)
-  # jagger_disnp <- runif(nrow(hapi_plot), 1e-9,1e-8)
-  # hapi_plot$P <- hapi_plot$P + jagger_disnp
   hapi_plot <- hapi_plot %>% mutate(sig = ifelse(P<sig_line,"sig","nosig"))
 
   hapi_data_cum <- hapi_plot %>%
     group_by(CHROM) %>%
     dplyr::summarise(max_bp = max(END)) %>%
-    mutate(bp_add = lag(cumsum(max_bp),default = 0)) %>%
+    mutate(bp_add = dplyr::lag(cumsum(max_bp),default = 0)) %>%
     dplyr::select(CHROM, bp_add)
 
   hapi_plot <- hapi_plot %>%
     inner_join(hapi_data_cum, by = "CHROM") %>%
     mutate(START_cum = START + bp_add, END_cum = END + bp_add)
 
-  hapi_plot_sub <- hapi_plot[which(hapi_plot$CHROM %in% c(1,2)),]
-
   #haplotype
   hap_plot <- hap_file
-  #hap_plot <- hap %>% dplyr::select(chr, start,end, p)
   colnames(hap_plot) <- c("CHROM","START","END","P","ID")
-  #hap_plot$CHROM <- paste0("chr",hap_plot$CHROM)
   hap_plot <- hap_plot[which(hap_plot$P!=0),]
   hap_plot <- hap_plot %>% mutate(sig = ifelse(P<sig_line,"sig","nosig"))
   hap_data_cum <- hap_plot %>%
     group_by(CHROM) %>%
     dplyr::summarise(max_bp = max(END)) %>%
-    mutate(bp_add = lag(cumsum(max_bp),default = 0)) %>%
+    mutate(bp_add = dplyr::lag(cumsum(max_bp),default = 0)) %>%
     dplyr::select(CHROM, bp_add)
 
   hap_plot <- hap_plot %>%
     inner_join(hap_data_cum, by = "CHROM") %>%
     mutate(START_cum = START + bp_add, END_cum = END + bp_add)
-  hap_plot_sub <- hap_plot[which(hap_plot$CHROM %in% c(1,2)),]
 
   # Calculate midpoints for chromosome regions
 
@@ -127,17 +114,17 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
   #
   p <- ggplot() +
     # snp sig
-    geom_point(data = snp_plot %>% filter(sig=="sig"), aes(x = POS_cum, y = -log10(P),color = GWAS1_name), size = snp_sig_size, alpha = snp_sig_alpha,show.legend=TRUE) +
+    geom_point(data = snp_plot %>% dplyr::filter(sig=="sig"), aes(x = POS_cum, y = -log10(P),color = GWAS1_name), size = snp_sig_size, alpha = snp_sig_alpha,show.legend=TRUE) +
     # snp no sig
-    geom_point(data = snp_plot %>% filter(sig=="nosig"), aes(x = POS_cum, y = -log10(P),color = GWAS1_name), size = snp_nosig_size, alpha = snp_no_sig_alpha,show.legend	=TRUE) +
+    geom_point(data = snp_plot %>% dplyr::filter(sig=="nosig"), aes(x = POS_cum, y = -log10(P),color = GWAS1_name), size = snp_nosig_size, alpha = snp_no_sig_alpha,show.legend	=TRUE) +
     # di-SNP sig
-    geom_segment(data = hapi_plot %>% filter(sig=="sig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS2_name), lineend = hapi_sig_lineend, linewidth= hapi_sig_linewidth,alpha = hapi_sig_alpha,show.legend	=TRUE) +
+    geom_segment(data = hapi_plot %>% dplyr::filter(sig=="sig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS2_name), lineend = hapi_sig_lineend, linewidth= hapi_sig_linewidth,alpha = hapi_sig_alpha,show.legend	=TRUE) +
     # di-SNP nosig
-    geom_segment(data = hapi_plot %>% filter(sig=="nosig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS2_name), lineend = hapi_nosig_lineend,linewidth = hapi_nosig_linewidth, alpha = hapi_nosig_alpha,show.legend	=TRUE) +
+    geom_segment(data = hapi_plot %>% dplyr::filter(sig=="nosig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS2_name), lineend = hapi_nosig_lineend,linewidth = hapi_nosig_linewidth, alpha = hapi_nosig_alpha,show.legend	=TRUE) +
     # hap sig
-    geom_segment(data = hap_plot %>% filter(sig=="sig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS3_name), lineend = hap_sig_lineend,linewidth = hap_sig_linewidth,alpha = hap_sig_alpha, show.legend	=TRUE) +
+    geom_segment(data = hap_plot %>% dplyr::filter(sig=="sig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS3_name), lineend = hap_sig_lineend,linewidth = hap_sig_linewidth,alpha = hap_sig_alpha, show.legend	=TRUE) +
     # hap no sig
-    geom_segment(data = hap_plot %>% filter(sig=="nosig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS3_name), lineend = hap_nosig_lineend,linewidth = hap_nosig_linewidth,alpha = hap_nosig_alpha,show.legend	=TRUE) +
+    geom_segment(data = hap_plot %>% dplyr::filter(sig=="nosig"), aes(x = START_cum, xend = END_cum, y = -log10(P), yend = -log10(P),color = GWAS3_name), lineend = hap_nosig_lineend,linewidth = hap_nosig_linewidth,alpha = hap_nosig_alpha,show.legend	=TRUE) +
     # add significant line
     geom_hline(
       yintercept = -log10(sig_line), color = "red",
@@ -153,7 +140,7 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
     # add legend
     scale_color_manual(breaks = c(GWAS1_name, GWAS2_name, GWAS3_name),values = c(snp_color, hapi_color,hap_color), name = "Data Type") +
     # add plot title
-    ggtitle(paste0("Manhattan plot of ",GWAS1_name, ", ", GWAS2_name," and ", GWAS3_name," for ", T.Name)) +
+    ggtitle(paste0("Manhattan plot of ",GWAS1_name, ", ", GWAS2_name," and ", GWAS3_name," GWAS for ", T.Name)) +
     # add x and y title
     labs(x = "Chromsome", y = expression(-log[10]*P)) +
     theme_minimal()
