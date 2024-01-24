@@ -4,23 +4,21 @@
 \alias{SEL.SNP}
 \title{SNP association detection function}
 \usage{
-SEL.SNP(CP, xx, YFIX, KIN, method, PAR = NULL, Effect_SNP_number_adjust = TRUE)
+SEL.SNP(GEN, YFIX, KIN, method, PAR = NULL)
 }
 \arguments{
-\item{CP:}{SNP map matrix containing the SNPs genomic positions . It should contain 2 columns: chromosome and base pair positions respectively.}
+\item{GEN}{Letter code genotype matrix with SNP genomic position information. The rows represent SNPs. The columns represent samples and each sample has two columns. The first two columns are chromosome and base pair positions.}
 
-\item{xx:}{genotype matrix in numeric format. Can be calculated from function GEN.CODE(). It should be a list containing two matrix (Note: the input data must be the matrix class.). The first matrix is additive matrix, for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is dominant matrix, 1 for heterozygous sample, 0 for homozygous sample. In each matrix, the rows represent SNPs, and the columns represent samples.}
+\item{YFIX}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.}
 
-\item{YFIX:}{Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.Note: the input data must be the matrix class.}
+\item{KIN}{Kinship matrix. It can be obtained from KIN() function.}
 
-\item{KIN:}{Kinship matrix. It can be obtained from KIN() function.}
+\item{method}{Association model user want to use. It could be FIXED or RANDOM.}
 
-\item{method:}{Association model user want to use. It could be FIXED or RANDOM.}
-
-\item{PAR:}{Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().}
+\item{PAR}{Initial parameters for association test. The default is NULL. It can be calculated through function TEST.SCAN().}
 }
 \value{
-SEL.HAP function output a list containing five element. 1. Wald test result (chr, pos, wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (chr, pos,statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value); 4. independent SNPs counts; 5. adjusted P value threshold.
+SEL.HAP function output a list containing three element. 1. Wald test result (chr, pos, wald test statistic, wald test left tail probability (log), wald test P value; 2.liklihood ratio test(lrt) result (chr, pos,statistics, left tail probability(log), P value)); 3. full result with 9 elements (beta, sigma2, lambda*sigma2, gamma, standand error, wald test statistic,wald test P value,lrt statistics, lrt P value);
 }
 \description{
 This function allows you to detect target phenotype associated SNPs
@@ -28,6 +26,5 @@ This function allows you to detect target phenotype associated SNPs
 \details{
 Additional details...
 }
-\examples{
-SEL.SNP(CP, xx, YFIX, KIN, method, PAR=NULL,Effect_SNP_number_adjust = TRUE)
-}
+\keyword{GWAS}
+\keyword{SNP-based}

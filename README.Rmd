@@ -1,5 +1,17 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # GWAS2
 
@@ -10,8 +22,7 @@ The goal of GWAS2 is to perform Haplotype-based GWAS.
 
 ## Installation
 
-You can install the development version of GWAS2 from
-[GitHub](https://github.com/) with:
+You can install the development version of GWAS2 from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -22,15 +33,15 @@ devtools::install_github("qj009/GWAS2")
 
 This is a basic example which shows you how to solve a common problem:
 
-### Load GWAS2 package into environment
+### Load GWAS2 package into environment 
 
-``` r
+```{r load, eval=FALSE}
 library(GWAS2)
 ```
 
-### Load example Arabidopsis data:
+### Load example Arabidopsis data: 
 
-``` r
+```{r example, eval=FALSE}
 library(googledrive)
 # genotype data
 GEN_ID <-  drive_get(as_id("1VPLHa9QWiiey4N5jaUOc516xXo22_fVi"))
@@ -43,66 +54,65 @@ drive_download(Y_ID, overwrite = TRUE)
 (load(file="Y.rda"))
 ```
 
-### Prepare data for GWAS:
+### Prepare data for GWAS: 
 
 Generate biallelic genotype matrix from original dataset:
 
-``` r
+```{r, eval=FALSE}
 GEN.GG <- GEN[,-(1:2)]
 gg<-GG(GEN.GG)
 ```
 
-Generate numerical format genotype matrix from biallelic data:
+Generate numerical format genotype matrix from biallelic data:  
 
-``` r
+```{r, eval=FALSE}
 xx<-GEN.CODE(gg)
 ```
 
-Calculate kinship matrix:
+Calculate kinship matrix: 
 
-``` r
+```{r, eval=FALSE}
 kin<-KIN(xx)
 ```
 
 Generate SNP map file
 
-``` r
+```{r, eval=FALSE}
 CP<-matrix(as.numeric(GEN[,1:2]),nrow(GEN),2)
 ```
 
-Generate genotype matrix used for GWAS
+Generate genotype matrix used for GWAS 
 
-``` r
+```{r, eval=FALSE}
 gen<-cbind(CP,gg)
 ```
 
-Generate phenotype matrix used for GWAS:
+Generate phenotype matrix used for GWAS: 
 
-``` r
+```{r, eval=FALSE}
 YFIX <- as.matrix(Y[,2:3])
 ```
 
 Define association model:
-
-``` r
+```{r, eval=FALSE}
 method<-"RANDOM"
 ```
 
 Calculate initial parameters for association test
 
-``` r
+```{r, eval=FALSE}
 PAR<-TEST.SCAN(YFIX,NULL,KIN=kin,method,NULL)
 ```
 
-### SNP-based GWAS:
+### SNP-based GWAS: 
 
-``` r
+```{r SNP-GWAS,eval=FALSE}
 snp_scan <- SEL.SNP(gen, YFIX, KIN=kin, method, PAR=PAR)
 ```
 
-### Haplotype-based GWAS:
+### Haplotype-based GWAS: 
 
-``` r
+```{r Haplotype-GWAS,eval=FALSE}
 CN <- 16471 # Effective number of markers
 P.threshold = 1/CN
 RR.MULTI<-SEL.HAP(MAP.S=NULL, POS.S=NULL,GEN=gen, 
@@ -112,27 +122,27 @@ RR.MULTI<-SEL.HAP(MAP.S=NULL, POS.S=NULL,GEN=gen,
 
 Initial haplotype test result:
 
-``` r
+```{r, eval=FALSE}
 WALD.HapInitial<-RR.MULTI[[2]][[1]]
 LRT.HapInitial<-RR.MULTI[[2]][[2]]
 ```
 
 Haplotype final result:
 
-``` r
+```{r, eval=FALSE}
 WALD.FINAL<-RR.MULTI[[1]][[1]]
 LRT.FINAL<-RR.MULTI[[1]][[2]]
 ```
 
-### Visulization:
+### Visulization: 
 
-Here we take results based on Wald test as an example.
+Here we take results based on Wald test as an example.  
 
 Generate map file of SNP and Haplotype-based GWAS result:
 
 SNP
 
-``` r
+```{r, eval=FALSE}
 snp <- as.data.frame(snp_scan[[1]])
 snp_map <- snp %>% dplyr::select(X1,X2,X5) %>% mutate(id = paste0("chr",X1,":",X2))
 colnames(snp_map) <- c("chr", "pos","p","id")
@@ -140,15 +150,14 @@ colnames(snp_map) <- c("chr", "pos","p","id")
 
 Initial Haplotype
 
-``` r
+```{r, eval=FALSE}
 hapi <- WALD.HapInitial
 hapi_map <- hapi %>% dplyr::select(X1,X4,X5,X8) %>% mutate(id = paste0("chr",X1,":",X4,"_",X5))
 colnames(hapi_map) <- c("chr", "start","end","p","id")
 ```
 
 Final Haplotype
-
-``` r
+```{r, eval=FALSE}
 hap <-WALD.FINAL
 hap_map <- hap %>% dplyr::select(X1,X4,X5,X8) %>% mutate(id = paste0("chr",X1,":",X4,"_",X5))
 colnames(hap_map) <- c("chr", "start","end","p","id")
@@ -156,12 +165,14 @@ colnames(hap_map) <- c("chr", "start","end","p","id")
 
 Generate combined Manhattan plot:
 
-``` r
+```{r, eval=FALSE}
 T.Name = "LD"
 sig_line = 3E-06
 ylim = 9
 vis(T.Name, snp_map, hapi_map, hap_map, sig_line=sig_line, ylim)
 ```
 
-![](man/figures/LD.FWALD.SNP.HAPI.HAP_manhattan_clear.png) [Download the
-PDF](https://drive.google.com/file/d/1W0hsMJW0k8fLVR58KOr3Vt21iiJhDIsQ/view?usp=drive_link)
+ ![](man/figures/LD.FWALD.SNP.HAPI.HAP_manhattan_clear.png)
+[Download the PDF](https://drive.google.com/file/d/1W0hsMJW0k8fLVR58KOr3Vt21iiJhDIsQ/view?usp=drive_link)
+
+

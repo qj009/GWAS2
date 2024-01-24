@@ -1,28 +1,24 @@
-#' SNP statistical test function: FIXED
-#' @description
-#' This function allows you to do statistical test for selected SNP based on FIXED method. It is usually used inside the TEST.SCAN() function.
-#' @details
-#' Additional details...
-#'
-
-#' @param z: the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts.The rows represent samples. The columns represent SNPs. If z is NULL, then it will calculate PAR.
-#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
-#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
-
-#' @param fn0: Initial parameters for association test.
-
-#' @returns: the test result out is a three-element list:
-#' 1. wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
-#' 2. liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
-#' 3. parameters: beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value.
-
-
-#' @keywords cats
-#' @export
-#' @examples
-#' FIX(z,YFIX,KIN,fn0)
-
+# SNP statistical test function: FIXED, internal functions
+# @description
+# This function allows you to do statistical test for selected SNP based on FIXED method. It is usually used inside the TEST.SCAN() function.
+# @details
+# Additional details...
 #
+
+# @param z the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts.The rows represent samples. The columns represent SNPs. If z is NULL, then it will calculate PAR.
+# @param YFIX Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+# @param KIN Kinship matrix. It can be obtained from KIN() function.
+
+# @param fn0 Initial parameters for association test.
+
+# @returns the test result out is a three-element list:
+# 1. wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
+# 2. liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
+# 3. parameters: beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value.
+
+#' @import MASS
+#' @import  stats
+
 FIX<-function(z,YFIX,KIN,fn0){
   options(digits=22)
   loglike<-function(theta){
@@ -123,8 +119,8 @@ FIX<-function(z,YFIX,KIN,fn0){
     sigma2g<-lambda*sigma2
     fn1<-parm$value
 
-    print(fn0)
-    print(fn1)
+    print(paste0("L[0] = ",fn0))
+    print(paste0("L[1] = ",fn1))
 
     non.pos<-1:qx
     g<-beta[-non.pos]
@@ -148,8 +144,9 @@ FIX<-function(z,YFIX,KIN,fn0){
     p.l<-abs(p.l)
     p.lrt<-1-pchisq(lrt,length(g))
     LRT<-c(lrt,p.l,p.lrt)
-    parm<-rep(0,9)
-    parm[3]<-1
+    # parm<-rep(0,9)
+    # parm[3]<-1
+    parm<-c(beta,sigma2,sigma2g,stderr,wald,p.wald,lrt,p.lrt)
     RESULT<-list(WALD,LRT,parm)
     return(RESULT)
   }

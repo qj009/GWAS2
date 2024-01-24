@@ -6,16 +6,15 @@
 #' Additional details...
 #'
 #'
-#' @param GG: Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).Note: the input data must be the matrix class.
+#' @param GG Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).Note: the input data must be the matrix class.
 
 #' @returns
 #' It outputs numeric genotype matrix(s) in list format.It should be a list containing two matrix. The first matrix is additive matrix, for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is dominant matrix, 1 for heterozygous sample, 0 for homozygous sample. In each matrix, the rows represent SNPs, and the columns represent samples.
 
 
-#' @keywords
+#' @keywords Numeric coded genotype
 #' @export
-#' @examples
-#' GEN.CODE(GG)
+
 
 GEN.CODE<-function(GG){
   XAD<-list(list(),list())

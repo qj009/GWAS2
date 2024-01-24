@@ -7,7 +7,7 @@
 GEN.CODE(GG)
 }
 \arguments{
-\item{GG:}{Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).Note: the input data must be the matrix class.}
+\item{GG}{Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).Note: the input data must be the matrix class.}
 }
 \value{
 It outputs numeric genotype matrix(s) in list format.It should be a list containing two matrix. The first matrix is additive matrix, for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is dominant matrix, 1 for heterozygous sample, 0 for homozygous sample. In each matrix, the rows represent SNPs, and the columns represent samples.
@@ -18,6 +18,6 @@ This function allows you to convert letter coded genptype matrix into a numeric 
 \details{
 Additional details...
 }
-\examples{
-GEN.CODE(GG)
-}
+\keyword{Numeric}
+\keyword{coded}
+\keyword{genotype}

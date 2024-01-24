@@ -7,7 +7,7 @@
 KIN(gencode)
 }
 \arguments{
-\item{gencode:}{Genotype matrix with numeric code. Can be calculated from function GEN.CODE(). It should be a list containing two matrix. The first matrix is additive matrix, for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is dominant matrix, 1 for heterozygous sample, 0 for homozygous sample. In each matrix, the rows represent SNPs, and the columns represent samples.}
+\item{gencode}{Genotype matrix with numeric code. Can be calculated from function GEN.CODE(). It should be a list containing two matrix. The first matrix is additive matrix, for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is dominant matrix, 1 for heterozygous sample, 0 for homozygous sample. In each matrix, the rows represent SNPs, and the columns represent samples.}
 }
 \value{
 It outputs kinship matrix(s) in list format.
@@ -18,6 +18,4 @@ This function allows you to calculate kinship matrix.
 \details{
 Additional details...
 }
-\examples{
-KIN(gencode)
-}
+\keyword{kinship}

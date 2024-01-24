@@ -4,25 +4,23 @@
 
 #' @details
 #' Additional details...
-#'
-#'
-#' @param G.P: Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain one columns (one allele).
+
+#' @param G.P  Genotype matrix with letter code. Rows represent SNPs, and columns represent samples. Each sample contain one columns (one allele).
 
 #' @returns
 #' It outputs biallelic letter coded genotype matrix.Rows represent SNPs, and columns represent samples. Each sample contain two columns (two alleles).
 
 
-#' @keywords
+#' @keywords Biallelic genotype
 #' @export
-#' @examples
-#' GG(G.P)
+
 
 GG<-function(G.P){
   #n: sample counts
   n<-ncol(G.P)
   POS<-1:n
-  GG<-matrix(0,nrow(G.P),2*n)
-  GG[,2*POS-1]<-G.P
-  GG[,2*POS]<-G.P
-  return(GG)
+  G.B<-matrix(0,nrow(G.P),2*n)
+  G.B[,2*POS-1]<-G.P
+  G.B[,2*POS]<-G.P
+  return(G.B)
 }

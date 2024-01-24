@@ -1,12 +1,24 @@
 Package: GWAS2
-Title: What the Package Does (One Line, Title Case)
+Title: Second-generation GWAS package
 Version: 0.0.0.9000
 Authors@R: 
     person("Qiong", "Jia", , "qjia009@ucr.edu", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: This package is used for both traditional SNP-wise scan and haplotype-wise scan GWAS.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: This package is used for both traditional SNP-based scan and haplotype-based scan GWAS.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Imports: 
+    stats,
+    MASS,
+    plyr,
+    dplyr,
+    ggplot2
+Depends: 
+    R (>= 2.10),
+    tidyverse
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+LazyData: true

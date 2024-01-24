@@ -1,27 +1,23 @@
-#' SNP statistical test function: RANDOM
-#' @description
-#' This function allows you to do statistical test for selected SNP based on RANDOM method. It is usually used inside the TEST.SCAN() function.
-#' @details
-#' Additional details...
-#'
-
-#' @param z: the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts.The rows represent samples. The columns represent SNPs.
-#' @param YFIX: Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
-#' @param KIN: Kinship matrix. It can be obtained from KIN() function.
-#' @param theta: Initial parameters for association test.
-
-#' @returns: the test result out is a three-element list:
-#' 1. wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
-#' 2. liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
-#' 3. parameters: beta, sigma2, lambda*sigma2, gamma (two elements for heterozygote), standand error(four elements for heterozygote), wald test statistic,wald test P value,lrt statistics, lrt P value,.
-
-
-#' @keywords cats
-#' @export
-#' @examples
-#' RANDOM(z,YFIX,KIN,Theta)
-
+# SNP statistical test function: RANDOM, internal functions
+# @description
+# This function allows you to do statistical test for selected SNP based on RANDOM method. It is usually used inside the TEST.SCAN() function.
+# @details
+# Additional details...
 #
+
+# @param z the input one snp genotype matrix for all samples, dim: 1*n, n is the sample counts.The rows represent samples. The columns represent SNPs.
+# @param YFIX Phenotype input matrix. The first column is target phenotype data. The rest columns are FIXED traits user want to put into the model. If no FIXED traits, put 1 in the second column.
+# @param KIN Kinship matrix. It can be obtained from KIN() function.
+# @param Theta Initial parameters for association test.
+
+# @returns the test result out is a three-element list:
+#1. wald test reuslt: wald test statistic, wald test left tail probability(log), wald test P value;
+#2. liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
+#3. parameters: beta, sigma2, lambda*sigma2, gamma (two elements for heterozygote), standand error(four elements for heterozygote), wald test statistic,wald test P value,lrt statistics, lrt P value,.
+
+#' @import MASS
+#' @import  stats
+
 RANDOM<-function(z,YFIX,KIN,Theta){
   Loglike<-function(theta){
     xi<-exp(theta)
@@ -142,7 +138,7 @@ RANDOM<-function(z,YFIX,KIN,Theta){
   ##fn0<-Parm$value
   fn0<-Loglike(-Inf)
   lrt<-2*(fn0-fn1)
-  p_lrt<-1-pchisq(lrt,1)
+  p.lrt<-1-pchisq(lrt,1)
   p.l<-abs(as.numeric(pchisq(lrt,1,log.p=TRUE)))
   CLstderr<-tryCatch(chol(stderr), error=function(e) NULL)
   if (is.null(CLstderr)){
@@ -151,10 +147,10 @@ RANDOM<-function(z,YFIX,KIN,Theta){
     INVstderr<-chol2inv(CLstderr)
   }
   wald<-t(gamma)%*%INVstderr%*%gamma
-  p_wald<-1-pchisq(wald,length(gamma))
+  p.wald<-1-pchisq(wald,length(gamma))
   p.w<-abs(as.numeric(pchisq(wald,length(gamma),log.p=TRUE)))
 
-  parm<-c(beta,sigma2,sigma2g,gamma,stderr,wald,p_wald,lrt,p_lrt)
-  RESULT<-list(c(wald,p.w,p_wald),c(lrt,p.l,p_lrt),parm)
+  parm<-c(beta,sigma2,sigma2g,gamma,stderr,wald,p.wald,lrt,p.lrt)
+  RESULT<-list(c(wald,p.w,p.wald),c(lrt,p.l,p.lrt),parm)
   return(RESULT)
 }
