@@ -46,7 +46,7 @@
 
 
 
-vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
+vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim=NULL,
                 snp_sig_size = 8, snp_sig_alpha = 0.8, snp_nosig_size=1, snp_no_sig_alpha=0.3,
                 hapi_sig_lineend="round", hapi_sig_linewidth=5,hapi_sig_alpha = 1,
                 hapi_nosig_lineend="round", hapi_nosig_linewidth=1,hapi_nosig_alpha =0.3,
