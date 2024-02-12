@@ -15,11 +15,11 @@
 #' @param ylim The range of y-axis. The default is NULL for default scale range. It also can be a numeric vector of length two providing limits of the sale;
 #' @param snp_sig_size Point size of significant SNP signals, default is 8;
 #' @param snp_sig_alpha Point transparency of significant SNP signals, default is 0.8;
-#' @param snp_nosig_size Point size of non-significant SNP signalsdefault is 1;
-#' @param snp_no_sig_alpha Point transparence of non-significant SNP signals, default is 0.3;
+#' @param snp_nosig_size Point size of non-significant SNP signals, default is 1;
+#' @param snp_no_sig_alpha Point transparency of non-significant SNP signals, default is 0.3;
 #' @param hapi_sig_lineend Line end style (round, butt, square) of initial haplotype significant signals, default is "round";
 #' @param hapi_sig_linewidth Line width of initial haplotype significant signals, default is 5;
-#' @param hapi_sig_alpha Line transparence of initial haplotype significant signals, default is 1;
+#' @param hapi_sig_alpha Line transparency of initial haplotype significant signals, default is 1;
 #' @param hapi_nosig_lineend Line end style (round, butt, square) of initial haplotype non-significant signals, default is "round";
 #' @param hapi_nosig_linewidth Line width of initial haplotype non-significant signals, default is 1;
 #' @param hapi_nosig_alpha Line transparence of initial haplotype non-significant signals, default is 0.3;
