@@ -12,9 +12,9 @@
 #' @param hapi_file Initial di-SNP GWAS result. The table contain five column: chromosome, start base pair position, end base pair position,p value and haplotype ID;
 #' @param hap_file Haplotype-based GWAS final result. The table contain four column: chromosome, start base pair position, end base pair position, p value and haplotype ID;
 #' @param sig_line Significant p value threshold;
-#' @param ylim Maximum number of y axis;
+#' @param ylim The range of y-axis. The default is NULL for default scale range. It also can be a numeric vector of length two providing limits of the sale;
 #' @param snp_sig_size Point size of significant SNP signals, default is 8;
-#' @param snp_sig_alpha Point transparence of significant SNP signals, default is 0.8;
+#' @param snp_sig_alpha Point transparency of significant SNP signals, default is 0.8;
 #' @param snp_nosig_size Point size of non-significant SNP signalsdefault is 1;
 #' @param snp_no_sig_alpha Point transparence of non-significant SNP signals, default is 0.3;
 #' @param hapi_sig_lineend Line end style (round, butt, square) of initial haplotype significant signals, default is "round";
@@ -136,7 +136,7 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim,
     # add x-axis label
     scale_x_continuous(labels = paste0("chr",axis_set$CHROM),breaks = axis_set$center) +
     # set ylim
-    scale_y_continuous(expand = c(0, 0), limits = c(0, ylim)) +
+      scale_y_continuous(expand = c(0, 0), limits = ylim) +
     # add legend
     scale_color_manual(breaks = c(GWAS1_name, GWAS2_name, GWAS3_name),values = c(snp_color, hapi_color,hap_color), name = "Data Type") +
     # add plot title
