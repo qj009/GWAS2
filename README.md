@@ -150,8 +150,12 @@ Final Haplotype
 
 ``` r
 hap <-WALD.FINAL
-hap_map <- hap %>% dplyr::select(X1,X4,X5,X8) %>% mutate(id = paste0("chr",X1,":",X4,"_",X5))
-colnames(hap_map) <- c("chr", "start","end","p","id")
+# generate haplotype length which means the number of SNPs this haplotype contains. 
+hap_map <- hap %>% mutate(Hap_length = X3-X2+1) %>% select(X1,X4,X5,X8,Hap_length) %>% mutate(id = paste0("chr",X1,":",X4,"_",X5))  
+colnames(hap_map) <- c("chr", "start","end","p","Hap_length","id")
+
+# remove di-SNPs (initial result) in final FINAL haplotype result
+hap_map <- hap_map %>% dplyr::filter(Hap_length>=3)%>% dplyr::select(-Hap_length)
 ```
 
 Generate combined Manhattan plot:
@@ -159,9 +163,11 @@ Generate combined Manhattan plot:
 ``` r
 T.Name = "LD"
 sig_line = 3E-06
-ylim = 9
+ylim = c(0,9)
+
 vis(T.Name, snp_map, hapi_map, hap_map, sig_line=sig_line, ylim)
 ```
 
-![](man/figures/LD.FWALD.SNP.HAPI.HAP_manhattan_clear.png) [Download the
+![](man/figures/LD.FWALD.SNP.HAPI.HAP_log10_Random_0.05_3.03561084034331e-06_manhattan_clear.png)
+[Download the
 PDF](https://drive.google.com/file/d/1W0hsMJW0k8fLVR58KOr3Vt21iiJhDIsQ/view?usp=drive_link)

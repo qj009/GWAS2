@@ -76,14 +76,17 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim=NULL
   hapi_plot <- hapi_plot[which(hapi_plot$P!=0),]
   hapi_plot <- hapi_plot %>% mutate(sig = ifelse(P<sig_line,"sig","nosig"))
 
-  hapi_data_cum <- hapi_plot %>%
-    group_by(CHROM) %>%
-    dplyr::summarise(max_bp = max(END)) %>%
-    mutate(bp_add = dplyr::lag(cumsum(max_bp),default = 0)) %>%
-    dplyr::select(CHROM, bp_add)
+  # hapi_data_cum <- hapi_plot %>%
+  #   group_by(CHROM) %>%
+  #   dplyr::summarise(max_bp = max(END)) %>%
+  #   mutate(bp_add = dplyr::lag(cumsum(max_bp),default = 0)) %>%
+  #   dplyr::select(CHROM, bp_add)
 
+  # hapi_plot <- hapi_plot %>%
+  #   inner_join(hapi_data_cum, by = "CHROM") %>%
+  #   mutate(START_cum = START + bp_add, END_cum = END + bp_add)
   hapi_plot <- hapi_plot %>%
-    inner_join(hapi_data_cum, by = "CHROM") %>%
+    inner_join(snp_data_cum, by = "CHROM") %>%
     mutate(START_cum = START + bp_add, END_cum = END + bp_add)
 
   #haplotype
@@ -91,14 +94,17 @@ vis <- function(T.Name, snp_file, hapi_file, hap_file, sig_line=5e-08, ylim=NULL
   colnames(hap_plot) <- c("CHROM","START","END","P","ID")
   hap_plot <- hap_plot[which(hap_plot$P!=0),]
   hap_plot <- hap_plot %>% mutate(sig = ifelse(P<sig_line,"sig","nosig"))
-  hap_data_cum <- hap_plot %>%
-    group_by(CHROM) %>%
-    dplyr::summarise(max_bp = max(END)) %>%
-    mutate(bp_add = dplyr::lag(cumsum(max_bp),default = 0)) %>%
-    dplyr::select(CHROM, bp_add)
+  # hap_data_cum <- hap_plot %>%
+  #   group_by(CHROM) %>%
+  #   dplyr::summarise(max_bp = max(END)) %>%
+  #   mutate(bp_add = dplyr::lag(cumsum(max_bp),default = 0)) %>%
+  #   dplyr::select(CHROM, bp_add)
 
+  # hap_plot <- hap_plot %>%
+   #  inner_join(hap_data_cum, by = "CHROM") %>%
+   #  mutate(START_cum = START + bp_add, END_cum = END + bp_add)
   hap_plot <- hap_plot %>%
-    inner_join(hap_data_cum, by = "CHROM") %>%
+    inner_join(snp_data_cum, by = "CHROM") %>%
     mutate(START_cum = START + bp_add, END_cum = END + bp_add)
 
   # Calculate midpoints for chromosome regions
