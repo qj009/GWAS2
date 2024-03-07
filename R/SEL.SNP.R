@@ -17,7 +17,7 @@
 
 #' @keywords SNP-based GWAS
 #' @export
-#' @import plyr
+# @import plyr
 
 #
 SEL.SNP <- function(GEN, YFIX, KIN, method, PAR=NULL){

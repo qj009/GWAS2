@@ -1,6 +1,6 @@
 # SNP association detection function
 # @description
-#' This function allows you to detect target phenotype associated SNPs based on numerical coded genotype matrix. It currently only works for homozygous data or heterogeneous FIXED method.
+# This function allows you to detect target phenotype associated SNPs based on numerical coded genotype matrix. It currently only works for homozygous data or heterogeneous FIXED method.
 # @details
 # Additional details...
 #
@@ -18,7 +18,7 @@
 # @keywords
 # @export
 # @examples
-#' @import plyr
+# @import plyr
 
 #
 SEL.SNP.xx <- function(CP, xx, YFIX, KIN, method, PAR=NULL,Effect_SNP_number_adjust = TRUE){
