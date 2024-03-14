@@ -19,7 +19,7 @@
 # 2. z matrix: code of haplotypes;
 # 3. identified haplotypes (numerical code).
 
-#' @import plyr
+#' @importFrom plyr mapvalues
 
 test.HAP<-function(HAP.X,YFIX,KIN,method,PAR){
   n<-nrow(YFIX)

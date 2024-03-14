@@ -11,8 +11,8 @@
 
 # @returns Initial parameter fn0 which can be used in RANDOM function.
 
-#' @import MASS
-#' @import  stats
+# @import MASS
+# @import  stats
 
 MIXED<-function(YFIX,KIN){
 

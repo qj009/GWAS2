@@ -1,6 +1,6 @@
 #' Numeric coded genotype matrix creation function
 #' @description
-#' This function allows you to convert letter coded genptype matrix into a numeric coded genotype matrix.
+#' This function allows you to convert letter coded genotype matrix into a numeric coded genotype matrix.
 
 #' @details
 #' Additional details...

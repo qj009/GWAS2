@@ -16,8 +16,9 @@
 # 2. liklihood ratio test(lrt) result: statistics, left tail probability(log), P value;
 # 3. parameters: beta, sigma2, lambda*sigma2, gamma, standand error, lrt statistics, lrt P value,wald test statistic,wald test P value.
 
-#' @import MASS
-#' @import  stats
+#' @importFrom MASS ginv
+#' @importFrom  stats optim
+#' @importFrom  stats pchisq
 
 FIX<-function(z,YFIX,KIN,fn0){
   options(digits=22)
