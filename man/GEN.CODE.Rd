@@ -13,7 +13,7 @@ GEN.CODE(GG)
 It outputs numeric genotype matrix(s) in list format.It should be a list containing two matrix. The first matrix is additive matrix, for major allele homozygous sample is 1, 0 for heterozygous sample, -1 for minor allele homozygous sample; The second matrix is dominant matrix, 1 for heterozygous sample, 0 for homozygous sample. In each matrix, the rows represent SNPs, and the columns represent samples.
 }
 \description{
-This function allows you to convert letter coded genptype matrix into a numeric coded genotype matrix.
+This function allows you to convert letter coded genotype matrix into a numeric coded genotype matrix.
 }
 \details{
 Additional details...
